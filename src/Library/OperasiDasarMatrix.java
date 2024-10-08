@@ -1,6 +1,13 @@
 package Library;
 
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.NumberFormat;
+
+
 
 public class OperasiDasarMatrix {
 
@@ -27,18 +34,116 @@ public class OperasiDasarMatrix {
         }
     }
 
-//    public void readMatrixFile(String filename, Matrix m) {
-//
-//    }
-//
-//    public void readMatrixFileInterpolate(String filename, Matrix m, double x) {
-//
-//    }
-//
-//    public Matrix readSPL() {
-//
-//        return null;
-//    }
+    public void readMatrixFile(String filename, Matrix m) {
+        try {
+            File myObj = new File(filename);
+            Scanner myReader = new Scanner(myObj);
+
+            int row = 0;
+            int cols = 0;
+            while (myReader.hasNextLine()) {
+                String line = myReader.nextLine();
+                row++;
+                if (row == 1) {
+                    cols = line.trim().split(" ").length;
+                }
+            }
+
+            myReader.close();
+            myReader = new Scanner(myObj);
+
+            for (int i = 0; i < row; i++) {
+                if (myReader.hasNextLine()) {
+                    String[] column = myReader.nextLine().trim().split(" ");
+                    for (int j = 0; j < column.length; j++) {
+                        m.set_ELMT(i, j, Double.parseDouble(column[j]));
+                    }
+                }
+            }
+
+            m.set_ROW_EFF(row);
+            m.set_COL_EFF(cols);
+
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File tidak ditemukan");
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.out.println("Tipe data tidak sesuai");
+            e.printStackTrace();
+        }
+    }
+
+
+
+        public void readMatrixFileInterpolate(String filename, Matrix m) {
+            try {
+                File myObj = new File(filename);
+                Scanner myReader = new Scanner(myObj);
+
+                int row = 0;
+                int cols = 2;
+                while (myReader.hasNextLine()) {
+                    String line = myReader.nextLine();
+                    row++;
+                }
+
+                myReader.close();
+                myReader = new Scanner(myObj);
+
+                for (int i = 0; i < row; i++) {
+                    if (myReader.hasNextLine()) {
+                        String[] column = myReader.nextLine().trim().split(" ");
+                        if ((column.length != 1 && i == row - 1) || (column.length > 2)) {
+                            System.out.println("Matrix invalid");
+                            break;
+                        }
+                        for (int j = 0; j < column.length; j++) {
+                            m.set_ELMT(i, j, Double.parseDouble(column[j]));
+                        }
+                    }
+                }
+
+                m.set_ROW_EFF(row);
+                m.set_COL_EFF(cols);
+
+                myReader.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("File tidak ditemukan");
+                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                System.out.println("Tipe data tidak sesuai");
+                e.printStackTrace();
+            }
+        }
+
+
+    public Matrix readSPL() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Masukkan banyak baris matriks A: ");
+        int rowA = scanner.nextInt();
+        System.out.print("Masukkan banyak kolom matriks A: ");
+        int colA = scanner.nextInt();
+
+        Matrix matrixA = new Matrix();
+        createMatrix(matrixA, rowA, colA);
+        System.out.println("Masukkan elemen-elemen matriks A:");
+        readMatrix(matrixA, rowA, colA);
+
+
+
+        Matrix matrixB = new Matrix();
+        createMatrix(matrixB, rowA, 1);
+        System.out.println("Masukkan elemen-elemen matriks B:");
+        readMatrix(matrixB, rowA, 1);
+
+        Matrix mOut = new Matrix();
+        mOut = mergeMatrix(matrixA,matrixB);
+
+        return mOut;
+
+
+    }
 //
 //    public Matrix readSPLCramer() {
 //
@@ -54,10 +159,24 @@ public class OperasiDasarMatrix {
             System.out.print("\n");
         }
     }
-//
-//    public void displayMatrixtoFile(Matrix m, String filename) {
-//
-//    }
+
+    public void displayMatrixtoFile(Matrix m, String filename) {
+        try {
+            FileWriter myWriter = new FileWriter(filename);
+            for (int i = 0; i <= getLastIdxRow(m); i++) {
+                for (int j = 0; j <= getLastIdxCol(m); j++) {
+                    myWriter.write(String.valueOf(m.get_ELMT(i, j)));
+                    myWriter.write(" ");
+                }
+                myWriter.write("\n");
+            }
+
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
 
     // boolean stuff
     public boolean isMatrixIdxValid(int i, int j) {
@@ -142,6 +261,7 @@ public class OperasiDasarMatrix {
                 m3.set_ELMT(i,j,m3.get_ELMT(i,j)%mod);
             }
         }
+        return m3;
         }
 
     public Matrix multiplyByConst(Matrix m, double x) {
@@ -246,17 +366,21 @@ public class OperasiDasarMatrix {
     public Matrix mergeMatrix(Matrix m1, Matrix m2) {
         Matrix m3 = new Matrix();
         createMatrix(m3, m1.get_ROW_EFF(), m1.get_COL_EFF() + m2.get_COL_EFF());
-        for (int i = 0; i <= getLastIdxRow(m1); i++) {
-            for (int j = 0; j <= getLastIdxCol(m1);j++) {
-                m3.set_ELMT(i,j,m1.get_ELMT(i,j));
+
+        for (int i = 0; i < m1.get_ROW_EFF(); i++) {
+            for (int j = 0; j < m1.get_COL_EFF(); j++) {
+                m3.set_ELMT(i, j, m1.get_ELMT(i, j));
             }
         }
-        for (int i = 0; i <= getLastIdxRow(m2);i++) {
-            for (int j = getLastIdxCol(m1)+1; j <= getLastIdxCol(m1) + getLastIdxCol(m2)+1;j++) {
-                m3.set_ELMT(i,j,m2.get_ELMT(i,j));
+
+        for (int i = 0; i < m2.get_ROW_EFF(); i++) {
+            for (int j = 0; j < m2.get_COL_EFF(); j++) {
+                m3.set_ELMT(i, j + m1.get_COL_EFF(), m2.get_ELMT(i, j));
             }
         }
+
         return m3;
     }
+
 
 }
