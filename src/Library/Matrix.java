@@ -10,7 +10,7 @@ public class Matrix {
     public int colEff = 0;
 
     // selector
-    public double[][] mat = new double[ROW_CAP][COL_CAP];
+    public double[][] m = new double[ROW_CAP][COL_CAP];
 
 
     // selector
@@ -21,7 +21,7 @@ public class Matrix {
         return this.colEff;
     }
     public double get_ELMT(int i, int j) {
-        return this.mat[i][j];
+        return this.m[i][j];
     }
 
     public void set_ROW_EFF(int nRow) {
@@ -31,7 +31,7 @@ public class Matrix {
         this.colEff = nCol;
     }
     public void set_ELMT(int i, int j, double x) {
-        this.mat[i][j] = x;
+        this.m[i][j] = x;
     }
 
 }
