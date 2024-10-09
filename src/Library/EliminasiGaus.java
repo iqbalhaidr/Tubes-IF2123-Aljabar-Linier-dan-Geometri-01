@@ -9,18 +9,15 @@ public class EliminasiGaus {
             matriks.m[i]=row2;
             matriks.m[j]=temp;
         }
-        else{
-            System.out.println("Silahkan masukkan indeks yang benar");
-        }
     }
 
     //mengurangi row i dengan n kali row j
     public void plus_or_subtract_row (Matrix matriks, int i, int j){
         double[] row1 = matriks.m[i];
         double[] row2 = matriks.m[j];
-        double constant=searchconstant(searchPivot(matriks, j),searchPivot(matriks, i));
+        double constant=searchPivot(matriks, j)/searchPivot(matriks, i);
         for (int col=0; col<matriks.colEff; col++){
-            row1[col]=row1[col]-(constant*row2[col]);
+            row2[col]=row2[col]-(constant*row1[col]);
         }
         
     }
@@ -48,11 +45,6 @@ public class EliminasiGaus {
         return matriks.rowEff-1;
     }
 
-    // Cari konstanta untuk operasi baris
-    public double searchconstant (double pivot, double elem){
-        return (elem/pivot);
-    }
-
     // Fungsi untuk mengubah pivot menjadi positif jika negatif
     public void makePivotPositive(Matrix matriks, int row_now) {
         double pivot = searchPivot(matriks, row_now);
@@ -72,17 +64,32 @@ public class EliminasiGaus {
             }
         }
     }
+
+    public void simplify (Matrix matriks){
+        for (int row=0; row<matriks.rowEff; row++){
+            double start=matriks.m[row][row];
+            for (int col=row; col<matriks.colEff; col++){
+                matriks.set_ELMT(row,col,matriks.m[row][col]/start);
+            }
+        }
+    }
     
     //metode gauss
     public void GausMethod (Matrix matriks){
         for (int col=0; col<matriks.colEff; col++){
             if (matriks.m[col][col]==0){
                 int notzero =searchindexnonzero(matriks, col);
-                swap(matriks, col, notzero);
+                if (notzero==0){
+                    continue;
+                }
+                else{
+                    swap(matriks, col, notzero);
+                }
             }
             for (int row=col; row<matriks.rowEff; row++){
-                makeValueBelowPivotZero(matriks, row, col);   
+                makeValueBelowPivotZero(matriks, row , col);   
             }
         }
+        simplify(matriks);
     }    
 }
