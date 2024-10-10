@@ -9,7 +9,9 @@ public class Determinan {
         //buat basis
         if (matriks.rowEff==2){
             return matriks.m[0][0]*matriks.m[1][1]-matriks.m[0][1]*matriks.m[1][0];
-        }
+        } else if (matriks.rowEff==1){ //start change
+            return matriks.m[0][0];
+        } //end change
         else{
             //buat rekuren
             for (int i=0; i<matriks.colEff; i++){
