@@ -56,7 +56,15 @@ public class OperasiDasarMatrix {
                 if (myReader.hasNextLine()) {
                     String[] column = myReader.nextLine().trim().split(" ");
                     for (int j = 0; j < column.length; j++) {
-                        m.set_ELMT(i, j, Double.parseDouble(column[j]));
+                        if (column[j].contains("/")) {
+                            String[] fraction = column[j].split("/");
+                            double numerator = Double.parseDouble(fraction[0]);
+                            double denominator = Double.parseDouble(fraction[1]);
+                            double value = numerator / denominator;
+                            m.set_ELMT(i, j, value);
+                        } else {
+                            m.set_ELMT(i, j, Double.parseDouble(column[j]));
+                        }
                     }
                 }
             }
@@ -116,7 +124,6 @@ public class OperasiDasarMatrix {
                 e.printStackTrace();
             }
         }
-
 
     public Matrix readSPL() {
         Scanner scanner = new Scanner(System.in);
