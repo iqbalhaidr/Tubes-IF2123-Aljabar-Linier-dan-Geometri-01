@@ -34,4 +34,30 @@ public class MatriksBalikan {
         }
         return matriksKof;
     }
+
+
+    public Matrix transpose (Matrix matriks) {
+        Matrix matriksTrans = new Matrix(); ODM.createMatrix(matriksTrans, matriks.get_ROW_EFF(), matriks.get_COL_EFF());
+        for (int matriksRow = 0; matriksRow < matriks.get_ROW_EFF(); matriksRow++) {
+            for (int matriksCol = 0; matriksCol < matriks.get_COL_EFF(); matriksCol++) {
+                matriksTrans.set_ELMT(matriksCol, matriksRow, matriks.get_ELMT(matriksRow, matriksCol));
+            }
+        }
+        return matriksTrans;
+    }
+
+    public Matrix inverseWithAdj (Matrix matriks) {
+        
+        double determinan = DET.kofaktor(matriks);
+        if (determinan == 0) {                                                                                                         
+            System.out.println("determinan sama dengan 0, inverse matriks tidak bisa dicari");                                       //pesan error
+            return matriks;                                                                                                            //determinan = 0, return matriks awal
+        } else {
+            Matrix matriksInv = new Matrix();
+            matriksInv = this.matriksKofaktor(matriks);
+            matriksInv = this.transpose(matriksInv);
+            matriksInv = ODM.multiplyByConst(matriksInv, 1/determinan);
+            return matriksInv;
+        }
+    }
 }
