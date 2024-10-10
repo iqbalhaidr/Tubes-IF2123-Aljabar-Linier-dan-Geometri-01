@@ -1,6 +1,8 @@
 package Library;
 
 public class EliminasiGaus {
+    static char[] parameter={'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    OperasiDasarMatrix ODM=new OperasiDasarMatrix();
     public void swap(Matrix matriks, int i, int j){
         if ((i<matriks.rowEff) && (j<matriks.rowEff)){
             double[] row1 = matriks.m[i];
@@ -65,11 +67,23 @@ public class EliminasiGaus {
         }
     }
 
+    public int searchElementNonZeroInRow(double[] arr, int length){
+        for (int i=0; i<length; i++){
+            if (arr[i]!=0){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void simplify (Matrix matriks){
         for (int row=0; row<matriks.rowEff; row++){
-            double start=matriks.m[row][row];
-            for (int col=row; col<matriks.colEff; col++){
-                matriks.set_ELMT(row,col,matriks.m[row][col]/start);
+            double id=searchElementNonZeroInRow(matriks.m[row], matriks.colEff-1);
+            if (id!=-1){
+                double start=matriks.m[row][(int)id];
+                for (int col=row; col<matriks.colEff; col++){
+                    matriks.set_ELMT(row,col,matriks.m[row][col]/start);
+                }
             }
         }
     }
@@ -92,4 +106,87 @@ public class EliminasiGaus {
         }
         simplify(matriks);
     }    
+
+    //prosedur untuk mencari nilai solusi yang ada dan memprintnya
+    public void backsubs (Matrix matriks){
+        if (matriks.m[matriks.rowEff - 1][matriks.colEff - 2] == 0 && matriks.m[matriks.rowEff - 1][matriks.colEff - 1] != 0) {
+            System.out.println("There is no solution for this SPL.");
+        } 
+        else {
+            // Inisialisasi array solusi dengan 0
+            double[] solution = new double[matriks.colEff - 1];
+            boolean[] parametric = new boolean[matriks.colEff - 1]; 
+
+            for (int i=0; i<solution.length; i++){
+                solution[i]=0;
+            }
+
+            for (int row=matriks.rowEff-1; row>=0; row-- ){
+                for (int col=0; col<matriks.colEff-1; col++){
+
+                    if (matriks.m[row][col]==1){
+                        solution[col]=matriks.m[row][matriks.colEff-1];
+                        for (int j=col+1; j<matriks.colEff-1; j++){
+                            if (solution[j]==0){
+                                parametric[col]=true;
+                            }
+                            else{
+                                if (!parametric[j]){
+                                    solution[col]-=solution[j]*matriks.m[row][j];
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }   
+            }
+
+            writesolution(matriks, solution, parametric);
+        }
+    }
+
+    //fungsi mencari index dari leading one
+    public int searchLeadingone(double[] arr, int length){
+        for (int i=0; i<length; i++){
+            if (arr[i]==1){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void writesolution (Matrix matriks, double[] arr, boolean[] parameter){
+        System.out.println("");
+        System.out.println("Solution for your SPL is:");
+        for (int row=0; row<matriks.rowEff;row++){  
+            String result="";
+            boolean check=false;
+            for (int col=0; col<matriks.colEff-1; col++){
+                result="X"+(col+1)+" = ";
+                if (matriks.m[row][col]==1){
+                    result=result+arr[col];
+                    check=true;
+                    for (int j=col+1; j<matriks.colEff-1; j++){
+                        if (parameter[j] || arr[j]==0){
+                            result=result+" - "+matriks.m[row][j]+"X"+(j+1);
+                        }
+                    }
+                    break;
+                }
+            }
+            if (check){
+                System.out.println(result);
+            }
+
+        }
+        for (int col=0; col<matriks.colEff-1; col++){
+            if (arr[col]==0){
+                System.out.printf("X%d = Bebas",(col+1));
+            }
+        }
+    }
 }
+
+
+    
+    
