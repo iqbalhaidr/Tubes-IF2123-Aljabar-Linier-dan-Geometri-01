@@ -16,8 +16,8 @@ public class Main {
 
         Matrix matriks = new Matrix();
         System.out.println("Silahkan masukkan matriks anda:");
-        ODM.createMatrix(matriks,4,4);
-        ODM.readMatrix(matriks, 4, 4);
+        ODM.createMatrix(matriks,4,5);
+        ODM.readMatrix(matriks, 4, 5);
 
         // mencoba eliminasi gauss
         System.out.println("Matriks Sebelum:");
@@ -27,11 +27,12 @@ public class Main {
 
         System.out.println("Matriks Sesudah:");
         ODM.displayMatrix(matriks);
+        gauss.backsubs(matriks); //eror di line 148
 
 
-        // mencoba determinan kofaktor
-        hasilDet=cofactor.kofaktor(matriks);
-        System.out.printf("Hasil Kofaktor: %f",hasilDet);
+        // // mencoba determinan kofaktor
+        // hasilDet=cofactor.kofaktor(matriks);
+        // System.out.printf("Hasil Kofaktor: %f",hasilDet);
 
 
     }
