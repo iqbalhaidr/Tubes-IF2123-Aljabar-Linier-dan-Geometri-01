@@ -182,6 +182,7 @@ public class EliminasiGaus {
         for (int col=0; col<matriks.colEff-1; col++){
             if (arr[col]==0){
                 System.out.printf("X%d = Bebas",(col+1));
+                System.out.println("");
             }
         }
     }
