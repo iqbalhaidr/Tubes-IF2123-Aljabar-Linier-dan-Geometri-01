@@ -137,7 +137,8 @@ public class gaussjordan {
         else if (flag == 1) {
             String solution[] = new String[m.get_ROW_EFF()];
             for (int row = 0; row <= operasi.getLastIdxRow(m);row++) {
-                solution[row] = Double.toString(m.get_ELMT(row,operasi.getLastIdxCol(m)));
+                solution [row] = "X" + (row+1)  + " = ";
+                solution[row] += Double.toString(m.get_ELMT(row,operasi.getLastIdxCol(m)));
             }
             return solution;
         }
@@ -204,23 +205,23 @@ public class gaussjordan {
                 if (!(isFreeVariable[i])) {
                     result[i] +=  Double.toString(nonParamCoef[i]) + " ";
                 }
-                for (int j = 0; j < m.get_COL_EFF()-1;j++) {
-                    if (ParamCoef.get_ELMT(i,j) != 0) {
-                        if (ParamCoef.get_ELMT(i,j) > 0 && nonParamCoef[i] != 0) {
-                            result[i] += " + ";
-                        }
-                        else if (ParamCoef.get_ELMT(i,j) < 0 && nonParamCoef[i] != 0) {
-                            result[i] += "- ";
-                        }
-                        if (Math.abs(ParamCoef.get_ELMT(i,j)) != 1) {
-                            result[i] += Double.toString(Math.abs(ParamCoef.get_ELMT(i,j)));
-                        }
-                        else {
-                            if (ParamCoef.get_ELMT(i,j) == -1) {
-                                result[i] += "-";
+                if (isFreeVariable[i]) {
+                    result[i] += "Bebas";
+                }
+
+                else {
+                    for (int j = 0; j < m.get_COL_EFF()-1;j++) {
+                        if (ParamCoef.get_ELMT(i, j) != 0) {
+                            if (ParamCoef.get_ELMT(i, j) > 0 && nonParamCoef[i] != 0) {
+                                result[i] += " + ";
+                            } else if (ParamCoef.get_ELMT(i, j) < 0 && nonParamCoef[i] != 0) {
+                                result[i] += " - ";
                             }
+                            if (Math.abs(ParamCoef.get_ELMT(i, j)) != 1) {
+                                result[i] += Double.toString(Math.abs(ParamCoef.get_ELMT(i, j)));
+                            }
+                            result[i] += "X" + Integer.toString(j + 1);
                         }
-                        result[i] += "X" + Integer.toString(j+1);
                     }
                 }
             }
