@@ -168,7 +168,10 @@ public class EliminasiGaus {
                     check=true;
                     for (int j=col+1; j<matriks.colEff-1; j++){
                         if (parameter[j] || arr[j]==0){
-                            result=result+" - "+matriks.m[row][j]+"X"+(j+1);
+                            if(matriks.m[row][j]!=0){
+                                result=result+" - "+matriks.m[row][j]+"X"+(j+1);
+                            }
+                            
                         }
                     }
                     break;
