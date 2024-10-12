@@ -115,33 +115,37 @@ public class gaussjordan {
         ToEchelonRed(m);
         int flag = 1; //solusi unik
         boolean allzero = true;
-        for (int j = 0; j < operasi.getLastIdxCol(m); j++) {
-            if (j != operasi.getLastIdxCol(m) && m.get_ELMT(operasi.getLastIdxRow(m), j) != 0) {
-                allzero = false;
-                break;
+
+        for (int i = operasi.getLastIdxRow(m); i >= 0; i--) {
+            for (int j = 0; j < operasi.getLastIdxCol(m); j++) {
+                if (m.get_ELMT(i, j) != 0) {
+                    allzero = false;
+                    break;
+                }
+            }
+            if (allzero) {
+                if (m.get_ELMT(i,operasi.getLastIdxCol(m)) != 0) {
+                    flag = 3; //tidak ada solusi
+                }
+                else {
+                    flag = 2; //banyak solusi
+                }
             }
         }
-        if (allzero) {
-            if (m.get_ELMT(operasi.getLastIdxRow(m),operasi.getLastIdxCol(m)) != 0) {
-                flag = 3; //tidak ada solusi
-            }
-            else {
-                flag = 2; //banyak solusi
-            }
-        }
+
 
         if (flag == 3) {
             System.out.println("Tidak ada solusi");
 
         }
-        else if (flag == 1) {
-            String solution[] = new String[m.get_ROW_EFF()];
-            for (int row = 0; row <= operasi.getLastIdxRow(m);row++) {
-                solution [row] = "X" + (row+1)  + " = ";
-                solution[row] += Double.toString(m.get_ELMT(row,operasi.getLastIdxCol(m)));
-            }
-            return solution;
-        }
+//        else if (flag == 1) {
+//            String solution[] = new String[m.get_ROW_EFF()];
+//            for (int row = 0; row <= operasi.getLastIdxRow(m);row++) {
+//                solution [row] = "X" + (row+1)  + " = ";
+//                solution[row] += Double.toString(m.get_ELMT(row,operasi.getLastIdxCol(m)));
+//            }
+//            return solution;
+//        }
 
         else { // flag = 2
 
@@ -202,6 +206,7 @@ public class gaussjordan {
             for (int i = 0; i < m.get_COL_EFF()-1;i++) {
                 result[i] = "";
                 result[i] += "X" + Integer.toString(i+1) + " = ";
+
                 if (!(isFreeVariable[i])) {
                     result[i] +=  Double.toString(nonParamCoef[i]) + " ";
                 }
@@ -212,9 +217,9 @@ public class gaussjordan {
                 else {
                     for (int j = 0; j < m.get_COL_EFF()-1;j++) {
                         if (ParamCoef.get_ELMT(i, j) != 0) {
-                            if (ParamCoef.get_ELMT(i, j) > 0 && nonParamCoef[i] != 0) {
+                            if (ParamCoef.get_ELMT(i, j) > 0) {
                                 result[i] += " + ";
-                            } else if (ParamCoef.get_ELMT(i, j) < 0 && nonParamCoef[i] != 0) {
+                            } else if (ParamCoef.get_ELMT(i, j) < 0) {
                                 result[i] += " - ";
                             }
                             if (Math.abs(ParamCoef.get_ELMT(i, j)) != 1) {
