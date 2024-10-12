@@ -36,7 +36,7 @@ public class OperasiDasarMatrix {
 
     public void readMatrixFile(String filename, Matrix m) {
         try {
-            File myObj = new File(filename);
+            File myObj = new File("test/" + filename);
             Scanner myReader = new Scanner(myObj);
 
             int row = 0;
