@@ -1,5 +1,8 @@
 import AplikasiSPL.*;
 import Library.*;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class MyApp {
@@ -130,60 +133,265 @@ public class MyApp {
         return choose;
     }
 
+
+    public static int saveOutput() {
+        Scanner sc = new Scanner(System.in);
+        int choose;
+        System.out.println("------------------------------");
+        System.out.println("Simpan jawaban dalam file?");
+        System.out.println("1. Simpan");
+        System.out.println("2. Tidak");
+        System.out.print("\nMasukkan pilihan (dalam angka): ");
+
+        do {
+            choose = sc.nextInt();
+            if (choose < 1 || choose > 2) {
+                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 sampai 2: ");
+            }
+        } while (choose < 1 || choose > 2);
+
+        return choose;
+    }
+
+
     public static void main(String[] args) {
+        OperasiDasarMatrix operasi = new OperasiDasarMatrix();
+        SPL spl = new SPL();
+        MatriksBalikan balikan = new MatriksBalikan();
+        EliminasiGaus gauss = new EliminasiGaus();
+        gaussjordan gj = new gaussjordan();
+        Determinan det = new Determinan();
+        InterpolasiPolinomial interpolasi = new InterpolasiPolinomial();
         Scanner sc = new Scanner(System.in);
         boolean running = true;
 
         while (running) {
             int choice = menu();
+            int inputMethod = 0;
+            if (choice != 7) {
+            inputMethod = InputType();}
 
             switch (choice) {
                 case 1:
+
                     // Sistem Persamaan Linier (SPL)
                     int splMethod = SPLType();
-                    int inputMethod = InputType();
-                    System.out.println("Metode SPL dipilih: " + splMethod);
-                    System.out.println("Input dari: " + (inputMethod == 1 ? "keyboard" : "file"));
-                    // Add further functionality for SPL here
+
+                    if (splMethod == 1) { //eliminasi gauss
+                        //implementasi
+                    }
+                    else if (splMethod == 2) { //gauss jordan
+                        Matrix m = new Matrix();
+                        if (inputMethod == 1) {
+                            m = operasi.readSPL();
+                        }
+                        else {
+                            System.out.print("Masukkan nama file input: ");
+                            String nama = sc.nextLine();
+                            operasi.readMatrixFile(nama,m);
+                        }
+
+                        if (m.get_COL_EFF() != 0 && m.get_ROW_EFF() != 0) {
+                       String solusi[] =  gj.solveSPL(m);
+                       if (solusi != null) {
+                           for (int i = 0; i < solusi.length; i++) {
+                               System.out.println(solusi[i]);
+                           }
+                       }
+                       int save = saveOutput();
+                       if (save == 1) {
+                           System.out.print("Masukkan nama file: ");
+                           String filename = sc.nextLine();
+                           try {
+                               FileWriter myWriter = new FileWriter("solusi" + filename + ".txt");
+                               if (solusi == null) {
+                                   myWriter.write("Tidak ada solusi");
+                               }
+                               else {
+                                   for (int i = 0; i < solusi.length; i++) {
+                                       myWriter.write (solusi[i]);
+                                       myWriter.write ("\n");
+                                   }
+                               }
+                               myWriter.close();
+                               System.out.println("Jawaban berhasil disimpan di solusi" + filename + ".txt");
+
+                           } catch (IOException e) {
+                               System.out.println("Terjadi kesalahan saat menyimpan file.");
+                           }
+
+
+                       }
+                       else {
+                           System.out.println("Jawaban tidak disimpan");
+                       }
+                       } }
+
+
+                    else if (splMethod == 3) { //matriks balikan
+                    //implementasi
+                         }
+                    else { //cramer splMethod == 4
+                        //implementasi
+                    }
                     break;
+
                 case 2:
                     // Determinan
-                    int detMethod = DeterminanType();
-                    inputMethod = InputType();
-                    System.out.println("Metode Determinan dipilih: " + detMethod);
-                    System.out.println("Input dari: " + (inputMethod == 1 ? "keyboard" : "file"));
-                    // Add further functionality for Determinan here
+                    int DeterminanMethod = DeterminanType();
+
+                    if (DeterminanMethod == 1) { //reduksi baris
+                        Matrix m = new Matrix();
+                        if (inputMethod == 1) {
+                            System.out.print("Masukkan banyak baris matriks: ");
+                            int row = sc.nextInt();
+                            System.out.print("Masukkan banyak kolom matriks: ");
+                            int col = sc.nextInt();
+                            operasi.createMatrix(m,row,col);
+                            System.out.println("Masukkan elemen-elemen matriks:");
+                            operasi.readMatrix(m,row,col);
+                        }
+                        else {
+                            System.out.print("Masukkan nama file: ");
+                            String nama = sc.nextLine();
+                            operasi.readMatrixFile(nama,m);
+                        }
+
+                        if (m.get_COL_EFF() != 0 && m.get_ROW_EFF() != 0) {
+                        if (!(operasi.isSquare(m))) {
+                            System.out.println("Matriks tidak memiliki determinan");
+                        }
+                        else {
+                        double determinan = gj.DeterminantOBE(m);
+                        System.out.println("Determinan matriks adalah " + determinan);
+                        int save = saveOutput();
+                        if (save == 1) {
+                            System.out.print("Masukkan nama file: ");
+                            String filename = sc.nextLine();
+
+                            try {
+                                FileWriter writer = new FileWriter("solusi" + filename + ".txt");
+                                writer.write("determinan = " + determinan);
+                                writer.close();
+                                System.out.println("Jawaban berhasil disimpan di solusi" + filename + ".txt");
+                            } catch (IOException e) {
+                                System.out.println("Terjadi kesalahan saat menyimpan file.");
+                            }
+
+                        }
+                        else {
+                            System.out.println("Jawaban tidak disimpan");
+                        }
+                    } } }
+
+                    else if (DeterminanMethod == 2) { //kofaktor
+                        //implementasi
+                    }
+
                     break;
+
                 case 3:
                     // Matriks Balikan
                     int balikanMethod = BalikanType();
-                    inputMethod = InputType();
-                    System.out.println("Metode Matriks Balikan dipilih: " + balikanMethod);
-                    System.out.println("Input dari: " + (inputMethod == 1 ? "keyboard" : "file"));
-                    // Add further functionality for Matriks Balikan here
+                    if (balikanMethod == 1) { //gauss jordan
+                        Matrix m = new Matrix();
+                        if (inputMethod == 1) {
+                            System.out.print("Masukkan banyak baris matriks: ");
+                            int row = sc.nextInt();
+                            System.out.print("Masukkan banyak kolom matriks: ");
+                            int col = sc.nextInt();
+                            operasi.createMatrix(m,row,col);
+                            System.out.println("Masukkan elemen-elemen matriks:");
+                            operasi.readMatrix(m,row,col);
+                        }
+                        else {
+                            System.out.print("Masukkan nama file: ");
+                            String nama = sc.nextLine();
+                            operasi.readMatrixFile(nama,m);
+                        }
+
+                        if (m.get_COL_EFF() != 0 && m.get_ROW_EFF() != 0) {
+                        if (!(operasi.isSquare(m)) || det.kofaktor(m) == 0) {
+                            System.out.println("Matriks tidak memiliki matriks balikan");
+                        }
+
+                        else {
+                            Matrix m2 = gj.MatriksBalikan(m);
+                            operasi.displayMatrix(m2);
+                            int save = saveOutput();
+                            if (save == 1) {
+                                System.out.print("Masukkan nama file: ");
+                                String filename = sc.nextLine();
+                                filename = "solusi" + filename + ".txt";
+                                operasi.displayMatrixtoFile(m2,filename);
+                                System.out.println("Jawaban berhasil disimpan di " + filename + ".txt");
+
+                            }
+                            else {
+                                System.out.println("Jawaban tidak disimpan");
+                            }
+                        }
+                    } }
+
+                    else if (balikanMethod == 2) { //adjoin
+                        //implementasi
+                    }
+
                     break;
+
                 case 4:
                     // Interpolasi Polinom
-                    inputMethod = InputType();
-                    System.out.println("Interpolasi Polinom dipilih.");
-                    System.out.println("Input dari: " + (inputMethod == 1 ? "keyboard" : "file"));
-                    // Add further functionality for Interpolasi Polinom here
+                    Matrix m = new Matrix();
+                    double y = 0;
+                    if (inputMethod == 1) {
+                        y = interpolasi.SolveInterpolasi(m,false);
+                    }
+                    else {
+                        y = interpolasi.SolveInterpolasi(m,true);
+                    }
+
+                    if (y != -999999) {
+                    int save = saveOutput();
+                    if (save == 1) {
+                        System.out.print("Masukkan nama file: ");
+                        String filename = sc.nextLine();
+
+                        try {
+                            FileWriter writer = new FileWriter("solusi" + filename + ".txt");
+                            writer.write("Nilai f(x) " + "adalah " + y);
+                            writer.close();
+                            System.out.println("Jawaban berhasil disimpan di solusi" + filename + ".txt");
+                        } catch (IOException e) {
+                            System.out.println("Terjadi kesalahan saat menyimpan file.");
+                        }
+
+                    }
+                    else {
+                        System.out.println("Jawaban tidak disimpan");
+                    } }
+
                     break;
+
                 case 5:
+
                     // Interpolasi Bicubic Spline
-                    inputMethod = InputType();
-                    System.out.println("Interpolasi Bicubic Spline dipilih.");
-                    System.out.println("Input dari: " + (inputMethod == 1 ? "keyboard" : "file"));
-                    // Add further functionality for Bicubic Spline here
+                    //implementasi
+
                     break;
+
                 case 6:
                     // Regresi Linier dan Kuadratik Berganda
-                    int regresiType = RegresiType();
-                    inputMethod = InputType();
-                    System.out.println("Jenis Regresi dipilih: " + regresiType);
-                    System.out.println("Input dari: " + (inputMethod == 1 ? "keyboard" : "file"));
-                    // Add further functionality for Regresi Linier and Kuadratik here
+                    int regresiMethod = RegresiType();
+                    if (regresiMethod == 1) { // regresi linier
+                        //implementasi
+                    }
+                    else if (regresiMethod == 2) { //regresi kuadratik
+                        //implementasi
+                    }
+
                     break;
+
+
                 case 7:
                     // Keluar
                     running = false;
