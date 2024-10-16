@@ -75,10 +75,9 @@ public class OperasiDasarMatrix {
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("File tidak ditemukan");
-            e.printStackTrace();
+
         } catch (NumberFormatException e) {
             System.out.println("Tipe data tidak sesuai");
-            e.printStackTrace();
         }
     }
 
@@ -86,7 +85,7 @@ public class OperasiDasarMatrix {
 
         public void readMatrixFileInterpolate(String filename, Matrix m) {
             try {
-                File myObj = new File(filename);
+                File myObj = new File("test/" + filename);
                 Scanner myReader = new Scanner(myObj);
 
                 int row = 0;
@@ -104,6 +103,7 @@ public class OperasiDasarMatrix {
                         String[] column = myReader.nextLine().trim().split(" ");
                         if ((column.length != 1 && i == row - 1) || (column.length > 2)) {
                             System.out.println("Matrix invalid");
+                            row = 0;
                             break;
                         }
                         for (int j = 0; j < column.length; j++) {
@@ -118,10 +118,9 @@ public class OperasiDasarMatrix {
                 myReader.close();
             } catch (FileNotFoundException e) {
                 System.out.println("File tidak ditemukan");
-                e.printStackTrace();
+
             } catch (NumberFormatException e) {
                 System.out.println("Tipe data tidak sesuai");
-                e.printStackTrace();
             }
         }
 
@@ -180,8 +179,7 @@ public class OperasiDasarMatrix {
 
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            System.out.println("Terjadi kesalahan saat menyimpan file.");
         }
     }
 
