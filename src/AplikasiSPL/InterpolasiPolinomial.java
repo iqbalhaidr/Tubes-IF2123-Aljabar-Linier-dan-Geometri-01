@@ -40,33 +40,75 @@ public class InterpolasiPolinomial {
         return mOut;
         }
 
-    public void SolveInterpolasi(Matrix m) {
-        Matrix mPoint = readPoint(m);
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Masukkan nilai x yang akan ditaksir: ");
-        double x = scanner.nextDouble();
-        Matrix mInterpolasi = ToMatrixInterpolasi(mPoint);
+    public double SolveInterpolasi(Matrix m, boolean inputfile) {
+        double x = 0;
+        double[] numbers = null;
+        String[] result = null;
+        double y = -999999; //mark
 
-        double[] numbers = new double[mInterpolasi.get_COL_EFF()-1];
-        String[] result = gj.solveSPL(mInterpolasi);
+        if (!inputfile) {
+            y = 0;
+            Matrix mPoint = readPoint(m);
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Masukkan nilai x yang akan ditaksir: ");
+            x = scanner.nextDouble();
 
-        //dapatkan nilai "non parametrik dari string"
-        for (int i = 0; i < mInterpolasi.get_COL_EFF()-1; i++) {
-            String[] parts = result[i].split("=");
-            String numberString = parts[1].trim();
-            numbers[i] = Double.parseDouble(numberString);
-        }
+            Matrix mInterpolasi = ToMatrixInterpolasi(mPoint);
 
-        double y = 0;
-        for (int col = 0; col < numbers.length; col++) {
-            double hasil = numbers[col] * Math.pow(x,col);
+            numbers = new double[mInterpolasi.get_COL_EFF() - 1];
+            result = gj.solveSPL(mInterpolasi);
 
-            y += hasil;
+            for (int i = 0; i < mInterpolasi.get_COL_EFF() - 1; i++) {
+                String[] parts = result[i].split("=");
+                String numberString = parts[1].trim();
+                numbers[i] = Double.parseDouble(numberString);
+            }
+
+            for (int col = 0; col < numbers.length; col++) {
+                double hasil = numbers[col] * Math.pow(x, col);
+                y += hasil;
+            }
+
             y = Math.round(y * 10000.0) / 10000.0;
-        }
 
-        System.out.println("Nilai f(x) untuk x = " + x + " adalah " + y);
+            System.out.println("Nilai f(x) untuk x = " + x + " adalah " + y);
 
+        } else {
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Masukkan nama file: ");
+            String filename = sc.nextLine();
+            operasi.readMatrixFileInterpolate(filename, m);
+
+            if (m.get_ROW_EFF() != 0) {
+            y = 0;
+            x = m.get_ELMT(m.get_ROW_EFF() - 1, 0);
+            m.set_ROW_EFF(m.get_ROW_EFF() - 1);
+            m.set_COL_EFF(m.get_COL_EFF() - 1);
+
+            Matrix mInterpolasi = ToMatrixInterpolasi(m);
+
+            numbers = new double[mInterpolasi.get_COL_EFF() - 1];
+            result = gj.solveSPL(mInterpolasi);
+
+            for (int i = 0; i < mInterpolasi.get_COL_EFF() - 1; i++) {
+                String[] parts = result[i].split("=");
+                String numberString = parts[1].trim();
+                numbers[i] = Double.parseDouble(numberString);
+            }
+
+            for (int col = 0; col < numbers.length; col++) {
+                double hasil = numbers[col] * Math.pow(x, col);
+                y += hasil;
+            }
+
+            y = Math.round(y * 10000.0) / 10000.0;
+
+            System.out.println("Nilai f(x) untuk x = " + x + " adalah " + y);
+        } }
+
+
+        return y;
     }
+
 
 }
