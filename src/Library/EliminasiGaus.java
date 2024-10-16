@@ -1,7 +1,7 @@
 package Library;
+import java.util.Arrays;
 
 public class EliminasiGaus {
-    static char[] parameter={'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     OperasiDasarMatrix ODM=new OperasiDasarMatrix();
     public void swap(Matrix matriks, int i, int j){
         if ((i<matriks.rowEff) && (j<matriks.rowEff)){
@@ -21,7 +21,6 @@ public class EliminasiGaus {
         for (int col=0; col<matriks.colEff; col++){
             row2[col]=row2[col]-(constant*row1[col]);
         }
-        
     }
 
     //cari pivot di baris
@@ -32,19 +31,20 @@ public class EliminasiGaus {
                 return row[col]; //return elem pertama yang tidak 0
             }
         }
-        return 0;
+        return -1;
     }
 
     // Cari baris non-nol pertama dalam kolom
-    public int searchindexnonzero (Matrix matriks, int index){
+    public int searchindexnonzero (Matrix matriks, int index, int rownow){
         for (int col=index; col<matriks.colEff; col++){
-            for (int row=index; row<matriks.rowEff; row++){
+            for (int row=rownow; row<matriks.rowEff; row++){
                 if (matriks.m[row][col]!=0){
                     return row;
                 }
             }
+            break;
         }
-        return matriks.rowEff-1;
+        return -1;
     }
 
     // Fungsi untuk mengubah pivot menjadi positif jika negatif
@@ -90,19 +90,29 @@ public class EliminasiGaus {
     
     //metode gauss
     public void GausMethod (Matrix matriks){
-        for (int col=0; col<matriks.colEff; col++){
-            if (matriks.m[col][col]==0){
-                int notzero =searchindexnonzero(matriks, col);
-                if (notzero==0){
+        int row_in_loop=0;
+        for (int col=0; col<matriks.colEff-1; col++){
+            if (matriks.m[row_in_loop][col]==0){
+            
+                int notzero =searchindexnonzero(matriks, col, row_in_loop);
+                if (notzero==-1){
                     continue;
                 }
                 else{
                     swap(matriks, col, notzero);
                 }
+                for (int row=row_in_loop; row<matriks.rowEff; row++){
+                    makeValueBelowPivotZero(matriks, row , col);   
+                }
+                row_in_loop+=1;
             }
-            for (int row=col; row<matriks.rowEff; row++){
-                makeValueBelowPivotZero(matriks, row , col);   
+            else if (matriks.m[row_in_loop][col]!=0){
+                for (int row=row_in_loop; row<matriks.rowEff; row++){
+                    makeValueBelowPivotZero(matriks, row , col);   
+                }
+                row_in_loop+=1;
             }
+            
         }
         simplify(matriks);
     }    
@@ -116,9 +126,20 @@ public class EliminasiGaus {
             // Inisialisasi array solusi dengan 0
             double[] solution = new double[matriks.colEff - 1];
             boolean[] parametric = new boolean[matriks.colEff - 1]; 
-
-            for (int i=0; i<solution.length; i++){
-                solution[i]=0;
+            boolean lanjut;
+            for (int i=0; i<matriks.colEff-1; i++){
+                // lanjut=false;
+                // for (int j=0; j<matriks.rowEff; j++){
+                //     if (matriks.m[j][i]!=0){
+                        solution[i]=0;
+                //         lanjut=true;
+                //         break;
+                //     }
+                // }
+                // if (lanjut){
+                //     continue;
+                // }
+                // solution[i]=-99999;
             }
 
             for (int row=matriks.rowEff-1; row>=0; row-- ){
@@ -164,17 +185,16 @@ public class EliminasiGaus {
             for (int col=0; col<matriks.colEff-1; col++){
                 result="X"+(col+1)+" = ";
                 if (matriks.m[row][col]==1){
-                    result=result+arr[col];
+                    result=result+((arr[col]!=0)? arr[col] : "");
                     check=true;
                     for (int j=col+1; j<matriks.colEff-1; j++){
-                        if (parameter[j] || arr[j]==0){
+                        if (parameter[j] || arr[j]==0 ){
                             if(matriks.m[row][j]!=0 &&  matriks.m[row][j]>0){
                                 result=result+" - "+matriks.m[row][j]+"X"+(j+1);
                             }
                             else if(matriks.m[row][j]!=0 &&  matriks.m[row][j]<0){
                                 result=result+" + "+((-1)*matriks.m[row][j])+"X"+(j+1);
                             }
-                            
                         }
                     }
                     break;

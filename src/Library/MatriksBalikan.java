@@ -37,7 +37,7 @@ public class MatriksBalikan {
 
 
     public Matrix transpose (Matrix matriks) {
-        Matrix matriksTrans = new Matrix(); ODM.createMatrix(matriksTrans, matriks.get_ROW_EFF(), matriks.get_COL_EFF());
+        Matrix matriksTrans = new Matrix(); ODM.createMatrix(matriksTrans, matriks.get_COL_EFF(), matriks.get_ROW_EFF());
         for (int matriksRow = 0; matriksRow < matriks.get_ROW_EFF(); matriksRow++) {
             for (int matriksCol = 0; matriksCol < matriks.get_COL_EFF(); matriksCol++) {
                 matriksTrans.set_ELMT(matriksCol, matriksRow, matriks.get_ELMT(matriksRow, matriksCol));
