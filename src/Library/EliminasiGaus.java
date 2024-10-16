@@ -166,6 +166,41 @@ public class EliminasiGaus {
         }
     }
 
+    public double[] backsubsV2 (Matrix matriks){ //nyoba cok
+        if (matriks.m[matriks.rowEff - 1][matriks.colEff - 2] == 0 && matriks.m[matriks.rowEff - 1][matriks.colEff - 1] != 0) {
+            System.out.println("There is no solution for this SPL.");
+            return null;
+        } 
+        else {
+            // Inisialisasi array solusi dengan 0
+            double[] solution = new double[matriks.colEff - 1];
+            boolean[] parametric = new boolean[matriks.colEff - 1]; 
+            for (int i=0; i<matriks.colEff-1; i++){
+                        solution[i]=0;
+            }
+            for (int row=matriks.rowEff-1; row>=0; row-- ){
+                for (int col=0; col<matriks.colEff-1; col++){
+
+                    if (matriks.m[row][col]==1){
+                        solution[col]=matriks.m[row][matriks.colEff-1];
+                        for (int j=col+1; j<matriks.colEff-1; j++){
+                            if (solution[j]==0){
+                                parametric[col]=true;
+                            }
+                            else{
+                                if (!parametric[j]){
+                                    solution[col]-=solution[j]*matriks.m[row][j];
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }   
+            }
+            return solution;
+        }
+    }
+
     //fungsi mencari index dari leading one
     public int searchLeadingone(double[] arr, int length){
         for (int i=0; i<length; i++){
