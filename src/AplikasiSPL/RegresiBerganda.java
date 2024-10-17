@@ -1,4 +1,6 @@
 package AplikasiSPL;
+import java.util.Scanner;
+
 import Library.*;
 
 public class RegresiBerganda {
@@ -11,17 +13,21 @@ public class RegresiBerganda {
 
     //menerima parameter dalam bentukan matriks augmented dan print hasilnya
     public void RegresiLinear(Matrix matriksAug) {
-        displayRegresiLinear(solveRegresiLinear(matriksAug));
+        double[] answer = solveRegresiLinear(matriksAug);
+        displayRegresiLinear(answer);
+        calculateYLinear(answer);
     }
 
     public void RegresiKuadratik(Matrix matriksAug) {
-        displayRegresiKuadratik(solveRegresiKuadratik(matriksAug), matriksAug.get_COL_EFF()-1);
+        double[] answer = solveRegresiKuadratik(matriksAug);
+        displayRegresiKuadratik(answer, matriksAug.get_COL_EFF()-1);
+        calculateYKuadratik(answer, matriksAug.get_COL_EFF()-1);
     }
     
     /*prekondisi: (X^T).X memiliki inverse
       parameter : matriksAug adalah matriks augmented dengan format X1 X2 X3 ... Y
       return    : matriks 1 dimensi [b0, b1, b2, ..., bn] */
-    public Matrix solveRegresiLinear(Matrix matriksAug) {
+    public double[] solveRegresiLinear(Matrix matriksAug) {
         Matrix X = new Matrix(); ODM.createMatrix(X, matriksAug.get_ROW_EFF(), matriksAug.get_COL_EFF());
         Matrix y = new Matrix(); ODM.createMatrix(y, matriksAug.get_ROW_EFF(), 1);
         
@@ -32,27 +38,54 @@ public class RegresiBerganda {
             }
             y.set_ELMT(i, 0, matriksAug.get_ELMT(i, matriksAug.get_COL_EFF()-1));
         }
-        return (ODM.multiplyMatrix(MB.inverseWithAdj(ODM.multiplyMatrix(MB.transpose(X), X)), ODM.multiplyMatrix(MB.transpose(X), y)));
+        Matrix matriksMerge = ODM.mergeMatrix(ODM.multiplyMatrix(MB.transpose(X), X), ODM.multiplyMatrix(MB.transpose(X), y));
+        EG.GausMethod(matriksMerge);
+        return EG.backsubsV2(matriksMerge);
+        //return (ODM.multiplyMatrix(MB.inverseWithAdj(ODM.multiplyMatrix(MB.transpose(X), X)), ODM.multiplyMatrix(MB.transpose(X), y)));
     }
 
     /*parameter : koefRegresi adalah matriks augmented dengan format X1 X2 X3 ... Y */
-    public void displayRegresiLinear(Matrix koefRegresi) {
+    public void displayRegresiLinear(double[] koefRegresi) {
         StringBuilder result = new StringBuilder("y = ");
 
-        result.append(koefRegresi.get_ELMT(0, 0));
+        result.append(koefRegresi[0]);
 
-        for (int i = 1; i < koefRegresi.get_ROW_EFF(); i++) {
-            if (koefRegresi.get_ELMT(i, 0) >= 0) {
+        for (int i = 1; i < koefRegresi.length; i++) {
+            if (koefRegresi[i] >= 0) {
                 result.append(" + ");
             } else {
                 result.append(" - ");
             }
-            result.append(Math.abs(koefRegresi.get_ELMT(i, 0))).append(".x").append(i);
+            result.append(Math.abs(koefRegresi[i])).append(".x").append(i);
         }
 
         System.out.println(result.toString());
     }
 
+    // Method untuk menghitung Y berdasarkan input user untuk variabel x1, x2, ..., xn
+    public void calculateYLinear(double[] koefRegresi) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Array untuk menampung nilai variabel X yang dimasukkan user
+        double[] X = new double[koefRegresi.length - 1];
+
+        // Menerima input dari user untuk setiap variabel X
+        for (int i = 0; i < X.length; i++) {
+            System.out.print("Masukkan nilai X" + (i + 1) + ": ");
+            X[i] = scanner.nextDouble();
+        }
+
+        // Menghitung Y berdasarkan persamaan regresi linear
+        double Y = koefRegresi[0]; // Inisialisasi dengan nilai intersep (a)
+
+        // Menambahkan kontribusi dari variabel x1, x2, ..., xn
+        for (int i = 0; i < X.length; i++) {
+            Y += koefRegresi[i + 1] * X[i]; // Koefisien linier dikali dengan nilai X
+        }
+
+        System.out.println("Hasil y berdasarkan input user: " + Y); // Mengembalikan hasil perhitungan Y; // Mengembalikan hasil perhitungan Y
+    }
+    
     //menggunakan eliminasi gauss
     public double[] solveRegresiKuadratik(Matrix matriksAug) {
         int peubah = matriksAug.get_COL_EFF()-1;
@@ -128,6 +161,44 @@ public class RegresiBerganda {
         System.out.println(result.toString());
     }
     
+    // Method untuk menghitung Y berdasarkan input user untuk X1, X2, ..., Xn
+    public void calculateYKuadratik(double[] coefficients, int n) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Array untuk menampung nilai-nilai X yang dimasukkan user
+        double[] X = new double[n];
+
+        // Menerima input dari user untuk setiap variabel X
+        for (int i = 0; i < n; i++) {
+            System.out.print("Masukkan nilai x" + (i + 1) + ": ");
+            X[i] = scanner.nextDouble();
+        }
+
+        // Menghitung Y berdasarkan persamaan regresi
+        double Y = coefficients[0]; // Inisialisasi dengan nilai intersep (a)
+
+        // Menambahkan kontribusi dari term linier
+        for (int i = 0; i < n; i++) {
+            Y += coefficients[i + 1] * X[i]; // Koefisien linier untuk X1, X2, ..., Xn
+        }
+
+        // Menambahkan kontribusi dari term kuadratik
+        for (int i = 0; i < n; i++) {
+            Y += coefficients[n + i + 1] * X[i] * X[i]; // Koefisien untuk X1^2, X2^2, ..., Xn^2
+        }
+
+        // Menambahkan kontribusi dari interaksi antar variabel
+        int interactionIdx = 2 * n + 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                Y += coefficients[interactionIdx] * X[i] * X[j]; // Koefisien untuk interaksi X_i * X_j
+                interactionIdx++;
+            }
+        }
+
+        System.out.println("Hasil y berdasarkan input user: " + Y); // Mengembalikan hasil perhitungan Y
+    }
+
     //KOEF 0 ga di print
     /*public void printRegresiKuadratikFlexible(double[] coefficients, int n) {
     
