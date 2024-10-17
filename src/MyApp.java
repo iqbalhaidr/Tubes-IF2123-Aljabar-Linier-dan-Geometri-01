@@ -332,8 +332,37 @@ public class MyApp {
                                 System.out.println("Jawaban tidak disimpan");
                             }
                         }
-                    } } else { //adjoin
-                        
+                    } } else { //Inverse Adjoin
+                        Matrix matriks = new Matrix();
+                        if (inputMethod == 1) {
+                            System.out.print("Masukkan banyak baris matriks: ");
+                            int row = sc.nextInt();
+                            System.out.print("Masukkan banyak kolom matriks: ");
+                            int col = sc.nextInt();
+                            operasi.createMatrix(matriks, row, col);
+                            System.out.println("Masukkan elemen-elemen matriks:\n");
+                            operasi.readMatrix(matriks, row, col);
+                        } else {
+                            System.out.print("Masukkan nama file: ");
+                            String nama = sc.nextLine();
+                            operasi.readMatrixFile(nama, matriks);
+                        }
+
+                        if (!(operasi.isSquare(matriks)) || det.kofaktor(matriks) == 0) {
+                            System.out.println("Matriks tidak memiliki matriks balikan");
+                        } else {
+                            operasi.displayMatrix(balikan.inverseWithAdj(matriks));
+                            int save = saveOutput();
+                            if (save == 1) {
+                                System.out.print("Masukkan nama file: ");
+                                String filename = sc.nextLine();
+                                filename = filename + ".txt";
+                                operasi.displayMatrixtoFile(balikan.inverseWithAdj(matriks), filename);
+                                System.out.println("Jawaban berhasil disimpan di " + filename);
+                            } else {
+                                System.out.println("Jawaban tidak disimpan");
+                            }
+                        }
                     }
 
                     break;
