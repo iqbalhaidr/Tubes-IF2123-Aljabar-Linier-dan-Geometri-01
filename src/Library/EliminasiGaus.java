@@ -166,7 +166,7 @@ public class EliminasiGaus {
         }
     }
 
-    public double[] backsubsV2 (Matrix matriks){ //nyoba cok
+    public double[] backsubsV2 (Matrix matriks){ //JANGAN DELETE!!
         if (matriks.m[matriks.rowEff - 1][matriks.colEff - 2] == 0 && matriks.m[matriks.rowEff - 1][matriks.colEff - 1] != 0) {
             System.out.println("There is no solution for this SPL.");
             return null;
