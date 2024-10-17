@@ -228,13 +228,47 @@ public class MyApp {
                        }
                        } }
 
+                    else if (splMethod == 3) { //metode matriks balikan
+                        Matrix matriksAug = new Matrix();
+                        if (inputMethod == 1) {
+                            matriksAug = operasi.readSPLAug();
+                        } else {
+                            System.out.print("Masukkan nama file input: ");
+                            String nama = sc.nextLine();
+                            operasi.readMatrixFile(nama, matriksAug);
+                        }
 
-                    else if (splMethod == 3) { //matriks balikan
-                    //implementasi
+                        double[] answer = spl.SPLInverse(matriksAug);
+                        spl.displaySPLCramer(answer);
+
+                        int save = saveOutput();
+                        if (save == 1) {
+                            spl.writeSPL(answer);
+                        } else {
+                            System.out.println("Jawaban tidak disimpan");
+                        }
+
+                    } else { //metode cramer
+                        Matrix matriksAug = new Matrix();
+                        if (inputMethod == 1) {
+                            matriksAug = operasi.readSPLAug();
+                        } else {
+                            System.out.print("Masukkan nama file input: ");
+                            String nama = sc.nextLine();
+                            operasi.readMatrixFile(nama, matriksAug);
+                        }
+
+                        double[] answer = spl.SPLCramer(matriksAug);
+                        spl.displaySPLCramer(answer);
+
+                        int save = saveOutput();
+                        if (save == 1) {
+                            spl.writeSPL(answer);
+                        } else {
+                            System.out.println("Jawaban tidak disimpan");
+                        }
                     }
-                    else { //cramer splMethod == 4
-                        //implementasi
-                    }
+
                     break;
 
                 case 2:
@@ -340,7 +374,7 @@ public class MyApp {
                             System.out.print("Masukkan banyak kolom matriks: ");
                             int col = sc.nextInt();
                             operasi.createMatrix(matriks, row, col);
-                            System.out.println("Masukkan elemen-elemen matriks:\n");
+                            System.out.println("Masukkan elemen-elemen matriks:");
                             operasi.readMatrix(matriks, row, col);
                         } else {
                             System.out.print("Masukkan nama file: ");
@@ -357,7 +391,7 @@ public class MyApp {
                                 System.out.print("Masukkan nama file: ");
                                 String filename = sc.nextLine();
                                 filename = filename + ".txt";
-                                operasi.displayMatrixtoFile(balikan.inverseWithAdj(matriks), filename);
+                                operasi.displayMatrixtoFile(balikan.inverseWithAdj(matriks), "test/" + filename);
                                 System.out.println("Jawaban berhasil disimpan di " + filename);
                             } else {
                                 System.out.println("Jawaban tidak disimpan");

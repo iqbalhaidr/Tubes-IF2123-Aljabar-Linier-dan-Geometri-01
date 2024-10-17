@@ -51,7 +51,7 @@ public class MatriksBalikan {
         double determinan = DET.kofaktor(matriks);
         if (determinan == 0) {                                                                                                         
             System.out.println("determinan sama dengan 0, inverse matriks tidak bisa dicari");                                       //pesan error
-            return matriks;                                                                                                            //determinan = 0, return matriks awal
+            return null;                                                                                                            //determinan = 0, return matriks awal
         } else {
             Matrix matriksInv = new Matrix();
             matriksInv = this.matriksKofaktor(matriks);

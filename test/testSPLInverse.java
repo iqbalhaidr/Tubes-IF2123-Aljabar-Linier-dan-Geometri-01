@@ -15,7 +15,7 @@ public class testSPLInverse {
         ODM.createMatrix(matriksAug, 4, 5); //asumsi 3 (peubah dan persamaan)
         ODM.readMatrix(matriksAug, matriksAug.get_ROW_EFF(), matriksAug.get_COL_EFF());
 
-        ODM.displayMatrix(objSPL.SPLInverse(matriksAug));
+        //ODM.displayMatrix(objSPL.SPLInverse(matriksAug));
     }
 }
 

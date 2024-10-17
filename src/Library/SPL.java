@@ -1,5 +1,9 @@
 package Library;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 public class SPL { 
 
     OperasiDasarMatrix ODM = new OperasiDasarMatrix();
@@ -44,7 +48,7 @@ public class SPL {
     /*prekondisi: A memiliki inverse (solusi unik)
       parameter : matriksAug adalah matriks augmented 
       return    : matriks Nx1 [X1, X2, X3, ..., Xn] */
-    public Matrix SPLInverse (Matrix matriksAug) {
+    public double[] SPLInverse (Matrix matriksAug) {
         //Matrix answer = new Matrix();
         Matrix A = new Matrix();
         Matrix b = new Matrix();
@@ -59,6 +63,49 @@ public class SPL {
             }
         }
 
-        return ODM.multiplyMatrix(MB.inverseWithAdj(A), b);
+        Matrix resultMatrix = ODM.multiplyMatrix(MB.inverseWithAdj(A), b);
+        double[] resultArray = new double[resultMatrix.get_ROW_EFF()];
+        for (int i = 0; i < resultMatrix.get_ROW_EFF(); i++) {
+            resultArray[i] = resultMatrix.get_ELMT(i, 0); // Menyimpan setiap elemen hasil ke array
+        }
+
+        return resultArray;
+    }
+
+    public void displaySPLCramer(double[] solusi) {
+        StringBuilder result = new StringBuilder();
+    
+        // Menampilkan setiap nilai x1, x2, ..., xn dari array solusi
+        for (int i = 0; i < solusi.length; i++) {
+            result.append("x").append(i + 1).append(" = ").append(solusi[i]).append("\n");
+        }
+    
+        // Mencetak hasil
+        System.out.println(result.toString());
+    }
+
+    public void writeSPL(double[] solusi) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Masukkan nama file: ");   
+        String filePath = sc.nextLine();
+        filePath = filePath + ".txt";
+        try {
+            FileWriter writer = new FileWriter("test/" + filePath);
+            StringBuilder result = new StringBuilder();
+    
+            // Menambahkan setiap nilai x1, x2, ..., xn dari array solusi
+            for (int i = 0; i < solusi.length; i++) {
+                result.append("x").append(i + 1).append(" = ").append(solusi[i]).append("\n");
+            }
+    
+            // Menulis hasil ke file
+            writer.write(result.toString());
+            writer.close();
+    
+            System.out.println("Hasil SPL Cramer telah ditulis ke file: " + filePath);
+        } catch (IOException e) {
+            System.out.println("Terjadi kesalahan saat menulis ke file.");
+            e.printStackTrace();
+        }
     }
 }

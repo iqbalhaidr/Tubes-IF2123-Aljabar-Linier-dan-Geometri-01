@@ -164,12 +164,22 @@ public class OperasiDasarMatrix {
         readMatrix(matriksAug, m, n+1);
         return matriksAug;
     }
-//
-//    public Matrix readSPLCramer() {
-//
-//        return null;
-//    }
-//
+
+    public Matrix readSPLAug() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Masukan Berupa Matriks Augmented\n");
+        System.out.print("Masukkan banyak baris: ");
+        int row = scanner.nextInt();
+        System.out.print("Masukkan banyak kolom: ");
+        int col = scanner.nextInt();
+
+        Matrix matriksAug = new Matrix();
+        createMatrix(matriksAug, row, col);
+        System.out.print("Masukkan Matriks Augmented\n");
+        readMatrix(matriksAug, row, col);
+        return matriksAug;
+    }
+
     public void displayMatrix(Matrix m) {
         for (int i = 0; i <= getLastIdxRow(m); i++) {
             for (int j = 0; j <= getLastIdxCol(m); j++) {

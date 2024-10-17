@@ -9,13 +9,15 @@ import java.util.Arrays;
 public class testCramer {
     public static void main(String[] args) {
         OperasiDasarMatrix ODM = new OperasiDasarMatrix();
-        SPL objSPL = new SPL();
+        SPL SSPL = new SPL();
         Matrix matriksAug = new Matrix();
 
         ODM.createMatrix(matriksAug, 3, 4); //asumsi 3 (peubah dan persamaan)
         ODM.readMatrix(matriksAug, matriksAug.get_ROW_EFF(), matriksAug.get_COL_EFF());
 
-        System.out.println(Arrays.toString(objSPL.SPLCramer(matriksAug)));
+        //System.out.println(Arrays.toString(SSPL.SPLCramer(matriksAug)));
+        SSPL.displaySPLCramer(SSPL.SPLCramer(matriksAug));
+
     }
 }
 
