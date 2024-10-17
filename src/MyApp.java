@@ -162,6 +162,7 @@ public class MyApp {
         gaussjordan gj = new gaussjordan();
         Determinan det = new Determinan();
         InterpolasiPolinomial interpolasi = new InterpolasiPolinomial();
+        RegresiBerganda RB = new RegresiBerganda();
         Scanner sc = new Scanner(System.in);
         boolean running = true;
 
@@ -230,7 +231,7 @@ public class MyApp {
 
                     else if (splMethod == 3) { //matriks balikan
                     //implementasi
-                         }
+                    }
                     else { //cramer splMethod == 4
                         //implementasi
                     }
@@ -331,10 +332,8 @@ public class MyApp {
                                 System.out.println("Jawaban tidak disimpan");
                             }
                         }
-                    } }
-
-                    else if (balikanMethod == 2) { //adjoin
-                        //implementasi
+                    } } else { //adjoin
+                        
                     }
 
                     break;
@@ -379,18 +378,25 @@ public class MyApp {
 
                     break;
 
-                case 6:
-                    // Regresi Linier dan Kuadratik Berganda
+                case 6: // Regresi Linier dan Kuadratik Berganda
+
                     int regresiMethod = RegresiType();
-                    if (regresiMethod == 1) { // regresi linier
-                        //implementasi
+                    Matrix matriksAug = new Matrix();
+                    if (inputMethod == 1) {
+                        matriksAug = operasi.readRegresi();
+                    } else {
+                        System.out.print("Masukkan nama file input: ");
+                        String nama = sc.nextLine();
+                        operasi.readMatrixFile(nama, matriksAug);
                     }
-                    else if (regresiMethod == 2) { //regresi kuadratik
-                        //implementasi
+
+                    if (regresiMethod == 1) {             // regresi linier
+                        RB.RegresiLinear(matriksAug);
+                    } else {                              //regresi kuadratik
+                        RB.RegresiKuadratik(matriksAug);
                     }
 
                     break;
-
 
                 case 7:
                     // Keluar
