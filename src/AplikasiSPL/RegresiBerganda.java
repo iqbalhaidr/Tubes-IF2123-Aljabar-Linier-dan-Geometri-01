@@ -1,7 +1,5 @@
 package AplikasiSPL;
 import java.util.Scanner;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import Library.*;
 
@@ -16,18 +14,14 @@ public class RegresiBerganda {
     //menerima parameter dalam bentukan matriks augmented dan print hasilnya
     public void RegresiLinear(Matrix matriksAug) {
         double[] answer = solveRegresiLinear(matriksAug);
-        double taksiran;
         displayRegresiLinear(answer);
-        taksiran = calculateYLinear(answer);
-        writeRegresiLinear(answer, taksiran);
+        calculateYLinear(answer);
     }
 
     public void RegresiKuadratik(Matrix matriksAug) {
         double[] answer = solveRegresiKuadratik(matriksAug);
-        double taksiran;
         displayRegresiKuadratik(answer, matriksAug.get_COL_EFF()-1);
-        taksiran = calculateYKuadratik(answer, matriksAug.get_COL_EFF()-1);
-        writeRegresiKuadratik(answer, matriksAug.get_COL_EFF()-1, taksiran);
+        calculateYKuadratik(answer, matriksAug.get_COL_EFF()-1);
     }
     
     /*prekondisi: (X^T).X memiliki inverse
@@ -69,7 +63,7 @@ public class RegresiBerganda {
     }
 
     // Method untuk menghitung Y berdasarkan input user untuk variabel x1, x2, ..., xn
-    public double calculateYLinear(double[] koefRegresi) {
+    public void calculateYLinear(double[] koefRegresi) {
         Scanner scanner = new Scanner(System.in);
 
         // Array untuk menampung nilai variabel X yang dimasukkan user
@@ -90,65 +84,8 @@ public class RegresiBerganda {
         }
 
         System.out.println("Hasil y berdasarkan input user: " + Y); // Mengembalikan hasil perhitungan Y; // Mengembalikan hasil perhitungan Y
-        return Y;
     }
     
-    public void writeRegresiLinear(double[] koefRegresi, double taksiran) {
-        Scanner sc = new Scanner(System.in);
-        int choose;
-        System.out.println("------------------------------");
-        System.out.println("Simpan jawaban dalam file?");
-        System.out.println("1. Simpan");
-        System.out.println("2. Tidak");
-        System.out.print("\nMasukkan pilihan (dalam angka): ");
-
-        do {
-            choose = sc.nextInt();
-            if (choose < 1 || choose > 2) {
-                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 sampai 2: ");
-            }
-        } while (choose < 1 || choose > 2);
-        
-        sc.nextLine();
-
-        if (choose == 1) {
-            System.out.print("Masukkan nama file: ");
-            String filename = sc.nextLine();
-            filename = filename + ".txt";
-            try {
-                FileWriter writer = new FileWriter("test/" + filename);
-                StringBuilder result = new StringBuilder("y = ");
-    
-                // Menambahkan intersep
-                result.append(koefRegresi[0]);
-    
-                // Menambahkan koefisien variabel
-                for (int i = 1; i < koefRegresi.length; i++) {
-                    if (koefRegresi[i] >= 0) {
-                        result.append(" + ");
-                    } else {
-                        result.append(" - ");
-                    }
-                    result.append(Math.abs(koefRegresi[i])).append(".x").append(i);
-                }
-    
-                result.append("\nNilai taksiran y: ").append(taksiran);
-    
-                // Menulis hasil ke file
-                writer.write(result.toString());
-                writer.close();
-    
-                System.out.println("Persamaan regresi telah ditulis ke file: " + filename);
-            } catch (IOException e) {
-                System.out.println("Terjadi kesalahan saat menulis ke file.");
-                e.printStackTrace();
-            }
-        }
-        else {
-            System.out.println("Jawaban tidak disimpan");
-        }
-    }
-
     //menggunakan eliminasi gauss
     public double[] solveRegresiKuadratik(Matrix matriksAug) {
         int peubah = matriksAug.get_COL_EFF()-1;
@@ -225,7 +162,7 @@ public class RegresiBerganda {
     }
     
     // Method untuk menghitung Y berdasarkan input user untuk X1, X2, ..., Xn
-    public double calculateYKuadratik(double[] coefficients, int n) {
+    public void calculateYKuadratik(double[] coefficients, int n) {
         Scanner scanner = new Scanner(System.in);
 
         // Array untuk menampung nilai-nilai X yang dimasukkan user
@@ -260,86 +197,49 @@ public class RegresiBerganda {
         }
 
         System.out.println("Hasil y berdasarkan input user: " + Y); // Mengembalikan hasil perhitungan Y
-        return Y;
     }
 
-    public void writeRegresiKuadratik(double[] koefRegresi, int n, double taksiran) {
-        Scanner sc = new Scanner(System.in);
-        int choose;
-        System.out.println("------------------------------");
-        System.out.println("Simpan jawaban dalam file?");
-        System.out.println("1. Simpan");
-        System.out.println("2. Tidak");
-        System.out.print("\nMasukkan pilihan (dalam angka): ");
-
-        do {
-            choose = sc.nextInt();
-            if (choose < 1 || choose > 2) {
-                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 sampai 2: ");
+    //KOEF 0 ga di print
+    /*public void printRegresiKuadratikFlexible(double[] coefficients, int n) {
+    
+        StringBuilder result = new StringBuilder("y = ");
+    
+        // Cetak intersep
+        result.append(coefficients[0]);
+    
+        // Cetak koefisien linier untuk X1 sampai Xn
+        for (int i = 1; i <= n; i++) {
+            if (coefficients[i] != 0) {
+                if (coefficients[i] > 0) result.append(" + ");
+                else result.append(" - ");
+                result.append(Math.abs(coefficients[i])).append(".x").append(i);
             }
-        } while (choose < 1 || choose > 2);
-        
-        sc.nextLine();
-
-        if (choose == 1) {
-            System.out.print("Masukkan nama file: ");
-            String filePath = sc.nextLine();
-            filePath = filePath + ".txt";
-            try {
-                FileWriter writer = new FileWriter("test/" + filePath);
-                StringBuilder result = new StringBuilder("y = ");
-
-                // Menambahkan intersep
-                result.append(koefRegresi[0]);
-
-                // Menambahkan koefisien linier untuk X1, X2, ..., Xn
-                for (int i = 1; i <= n; i++) {
-                    if (koefRegresi[i] >= 0) {
-                        result.append(" + ");
-                    } else {
-                        result.append(" - ");
-                    }
-                    result.append(Math.abs(koefRegresi[i])).append(".x").append(i);
-                }
-
-                // Menambahkan koefisien kuadratik untuk X1^2, X2^2, ..., Xn^2
-                for (int i = 1; i <= n; i++) {
-                    if (koefRegresi[n + i] >= 0) {
-                        result.append(" + ");
-                    } else {
-                        result.append(" - ");
-                    }
-                    result.append(Math.abs(koefRegresi[n + i])).append(".x").append(i).append("^2");
-                }
-
-                // Menambahkan koefisien interaksi antara variabel
-                int interactionIdx = 2 * n + 1;
-                for (int i = 1; i <= n; i++) {
-                    for (int j = i + 1; j <= n; j++) {  // Interaksi X_i * X_j
-                        if (koefRegresi[interactionIdx] >= 0) {
-                            result.append(" + ");
-                        } else {
-                            result.append(" - ");
-                        }
-                        result.append(Math.abs(koefRegresi[interactionIdx])).append(".x").append(i).append(".x").append(j);
-                        interactionIdx++;
-                    }
-                }
-
-                // Menambahkan nilai taksiran
-                result.append("\nNilai taksiran y: ").append(taksiran);
-
-                // Menulis hasil ke file
-                writer.write(result.toString());
-                writer.close();
-
-                System.out.println("Persamaan regresi kuadratik dan nilai taksiran telah ditulis ke file: " + filePath);
-            } catch (IOException e) {
-                System.out.println("Terjadi kesalahan saat menulis ke file.");
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Jawaban tidak disimpan");
         }
-    }
+    
+        // Cetak koefisien kuadratik untuk X1^2 sampai Xn^2
+        for (int i = 1; i <= n; i++) {
+            if (coefficients[n + i] != 0) {
+                if (coefficients[n + i] > 0) result.append(" + ");
+                else result.append(" - ");
+                result.append(Math.abs(coefficients[n + i])).append(".x").append(i).append("^2");
+            }
+        }
+    
+        // Cetak koefisien interaksi antara variabel
+        int interactionStartIdx = 2 * n + 1;
+        int interactionIdx = interactionStartIdx;
+        for (int i = 1; i <= n; i++) {
+            for (int j = i + 1; j <= n; j++) {  // Hanya interaksi X_i * X_j dengan i < j
+                if (coefficients[interactionIdx] != 0) {
+                    if (coefficients[interactionIdx] > 0) result.append(" + ");
+                    else result.append(" - ");
+                    result.append(Math.abs(coefficients[interactionIdx])).append(".x").append(i).append("x").append(j);
+                }
+                interactionIdx++;
+            }
+        }
+    
+        // Cetak persamaan regresi
+        System.out.println(result.toString()); 
+    } */
 }
