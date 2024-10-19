@@ -1,11 +1,13 @@
 package Library;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.NumberFormat;
+
 
 
 
@@ -20,10 +22,19 @@ public class OperasiDasarMatrix {
         m.set_ROW_EFF(nRows);
         m.set_COL_EFF(nCols);}
 
+    public boolean inputvalid (String angka){
+        for (int i=0; i<angka.length(); i++){
+            if (angka.charAt(i) < '0' || angka.charAt(i) > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 // selector
 
-//     Read & Write
+//  Read & Write
     public void readMatrix(Matrix m, int nRow, int nCol) {
         int i,j;
         Scanner sc = new Scanner(System.in);
@@ -33,6 +44,84 @@ public class OperasiDasarMatrix {
             }
         }
     }
+
+    public ArrayList<Double> inputfilebicubic(String filename, Matrix m) {
+        ArrayList<Double> xy = new ArrayList<>(); // Untuk menyimpan nilai (x, y)
+    
+        try {
+            File myObj = new File("test/" + filename);
+            Scanner myReader = new Scanner(myObj);
+    
+            int row = 0;
+            int cols = 0;
+    
+            // Hitung jumlah baris dan kolom
+            while (myReader.hasNextLine()) {
+                String line = myReader.nextLine().trim();
+                row++;
+                if (row == 1) {
+                    cols = line.split(" ").length;
+                }
+            }
+    
+            // Validasi ukuran matriks 4x4
+            if (cols > 4 || row > 5) {
+                throw new IOException("File " + filename + " bukanlah Matriks 4x4.");
+            }
+
+            createMatrix(m, row-1, cols);
+    
+            myReader.close(); // Tutup scanner pertama
+    
+            // Baca ulang file untuk mengisi matriks dan nilai (x, y)
+            myReader = new Scanner(myObj);
+            for (int i = 0; i < row; i++) {
+                if (myReader.hasNextLine()) {
+                    String[] column = myReader.nextLine().trim().split(" ");
+                    
+                    if (i < row - 1) { // Mengisi elemen matriks
+                        for (int j = 0; j < column.length; j++) {
+                            double value;
+                            if (column[j].contains("/")) {
+                                String[] fraction = column[j].split("/");
+                                double numerator = Double.parseDouble(fraction[0]);
+                                double denominator = Double.parseDouble(fraction[1]);
+                                value = numerator / denominator;
+                            } 
+                            else {
+                                value = Double.parseDouble(column[j]);
+                            }
+                            m.set_ELMT(i, j, value);
+                        }
+                    } 
+                    else if (i == row - 1 && column.length == 2) { // Baris terakhir (x, y)
+                        xy.add(Double.parseDouble(column[0]));
+                        xy.add(Double.parseDouble(column[1]));
+                    } 
+                    else {
+                        throw new IOException("Baris terakhir harus memiliki 2 elemen (x, y).");
+                    }
+                }
+            }
+    
+            // Set efektivitas baris dan kolom pada matriks
+            m.set_ROW_EFF(row - 1);
+            m.set_COL_EFF(cols);
+
+    
+            myReader.close(); // Tutup scanner terakhir
+            return xy;
+    
+        } catch (IOException e) {
+            // Menampilkan pesan error
+            System.out.println("Terjadi kesalahan: " + e.getMessage());
+        }
+    
+        return xy; // Mengembalikan nilai (x, y)
+    }
+    
+
+
 
     public void readMatrixFile(String filename, Matrix m) {
         try {
