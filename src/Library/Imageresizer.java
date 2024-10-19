@@ -53,7 +53,7 @@ public class Imageresizer {
             }
         }
         catch (IOException e) {
-            System.out.println("Terjadi kesalahan saat membaca gambar ");
+            System.out.println("Terjadi kesalahan saat membaca gambar. Proses resize dihentikan ");
         }
     }
 
