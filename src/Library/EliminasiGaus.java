@@ -1,4 +1,5 @@
 package Library;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class EliminasiGaus {
@@ -118,28 +119,19 @@ public class EliminasiGaus {
     }    
 
     //prosedur untuk mencari nilai solusi yang ada dan memprintnya
-    public void backsubs (Matrix matriks){
+    public ArrayList<String> backsubs (Matrix matriks){
+        ArrayList<String> answer = new ArrayList<>();
         if (matriks.m[matriks.rowEff - 1][matriks.colEff - 2] == 0 && matriks.m[matriks.rowEff - 1][matriks.colEff - 1] != 0) {
-            System.out.println("There is no solution for this SPL.");
+            answer.add("Tidak ada solusi.");
+            System.out.println("Tidak ada solusi.");
+            return answer;
         } 
         else {
             // Inisialisasi array solusi dengan 0
             double[] solution = new double[matriks.colEff - 1];
             boolean[] parametric = new boolean[matriks.colEff - 1]; 
-            boolean lanjut;
             for (int i=0; i<matriks.colEff-1; i++){
-                // lanjut=false;
-                // for (int j=0; j<matriks.rowEff; j++){
-                //     if (matriks.m[j][i]!=0){
-                        solution[i]=0;
-                //         lanjut=true;
-                //         break;
-                //     }
-                // }
-                // if (lanjut){
-                //     continue;
-                // }
-                // solution[i]=-99999;
+                solution[i]=0;
             }
 
             for (int row=matriks.rowEff-1; row>=0; row-- ){
@@ -162,7 +154,7 @@ public class EliminasiGaus {
                 }   
             }
 
-            writesolution(matriks, solution, parametric);
+            return writesolution(matriks, solution, parametric);
         }
     }
 
@@ -211,9 +203,11 @@ public class EliminasiGaus {
         return -1;
     }
 
-    public void writesolution (Matrix matriks, double[] arr, boolean[] parameter){
+    public ArrayList<String> writesolution (Matrix matriks, double[] arr, boolean[] parameter){
         System.out.println("");
-        System.out.println("Solution for your SPL is:");
+        ArrayList<String> save = new ArrayList<>();
+        save.add("Solusi untuk SPL mu:\n");
+        System.out.println("Solusi untuk SPL mu:");
         for (int row=0; row<matriks.rowEff;row++){  
             String result="";
             boolean check=false;
@@ -232,11 +226,13 @@ public class EliminasiGaus {
                             }
                         }
                     }
+                    result+=result+"\n";
+                    save.add(result);
                     break;
                 }
             }
             if (check){
-                System.out.println(result);
+                System.out.print(result);
             }
 
         }
@@ -244,8 +240,11 @@ public class EliminasiGaus {
             if (arr[col]==0){
                 System.out.printf("X%d = Bebas",(col+1));
                 System.out.println("");
+                String result="X"+(col+1)+"= Bebas\n";
+                save.add(result);
             }
         }
+        return save;
     }
 }
 
