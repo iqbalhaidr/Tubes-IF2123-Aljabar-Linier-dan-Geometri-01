@@ -553,6 +553,7 @@ public class MyApp {
                 
                     resize.displayImage("resized_image1.png");
                     System.out.println("Proses selesai!");
+                    break;
                     
 
                 case 8:
