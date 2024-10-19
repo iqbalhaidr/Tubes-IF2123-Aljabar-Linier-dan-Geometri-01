@@ -9,7 +9,9 @@ public class MyApp {
 
     public static int menu() {
         Scanner sc = new Scanner(System.in);
-        int choose;
+        OperasiDasarMatrix operasi = new OperasiDasarMatrix();
+        String choose;
+        int chosen = -9999;
 
         // Display the menu
         System.out.println("------------------------------");
@@ -20,22 +22,26 @@ public class MyApp {
         System.out.println("4. Interpolasi Polinom");
         System.out.println("5. Interpolasi Bicubic Spline");
         System.out.println("6. Regresi Linier dan Kuadratik Berganda");
-        System.out.println("7. Keluar");
+        System.out.println("7. Imageresizing and Stretching");
+        System.out.println("8. Keluar");
         System.out.print("\nMasukkan pilihan (dalam angka): ");
 
         do {
-            choose = sc.nextInt();
-            if (choose < 1 || choose > 7) {
-                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 dan 7: ");
+            choose = sc.nextLine();
+            chosen=(operasi.inputvalid(choose))? Integer.parseInt(choose) : chosen;
+            if ((chosen < 1 || chosen > 8)) {
+                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 atau 8: ");
             }
-        } while (choose < 1 || choose > 7);
+        } while (chosen < 1 || chosen > 8);
 
-        return choose;
+        return chosen;
     }
 
     public static int InputType() {
         Scanner sc = new Scanner(System.in);
-        int choose;
+        OperasiDasarMatrix operasi = new OperasiDasarMatrix();
+        String choose;
+        int chosen = -9999;
         System.out.println("------------------------------");
         System.out.println("PILIHAN METODE MASUKAN/INPUT");
         System.out.println("1. Input dari keyboard");
@@ -43,18 +49,21 @@ public class MyApp {
         System.out.print("\nMasukkan pilihan (dalam angka): ");
 
         do {
-            choose = sc.nextInt();
-            if (choose < 1 || choose > 2) {
+            choose = sc.nextLine();
+            chosen=(operasi.inputvalid(choose))? Integer.parseInt(choose) : chosen;
+            if ((chosen < 1 || chosen > 2)) {
                 System.out.print("Pilihan tidak valid. Masukkan angka antara 1 atau 2: ");
             }
-        } while (choose < 1 || choose > 2);
+        } while (chosen < 1 || chosen > 2);
 
-        return choose;
+        return chosen;
     }
 
     public static int SPLType() {
         Scanner sc = new Scanner(System.in);
-        int choose;
+        OperasiDasarMatrix operasi = new OperasiDasarMatrix();
+        String choose;
+        int chosen = -9999;
         System.out.println("------------------------------");
         System.out.println("PILIHAN METODE PENYELESAIAN SPL");
         System.out.println("1. Metode eliminasi Gauss");
@@ -64,19 +73,22 @@ public class MyApp {
         System.out.print("\nMasukkan pilihan (dalam angka): ");
 
         do {
-            choose = sc.nextInt();
-            if (choose < 1 || choose > 4) {
-                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 sampai 4: ");
+            choose = sc.nextLine();
+            chosen=(operasi.inputvalid(choose))? Integer.parseInt(choose) : chosen;
+            if ((chosen < 1 || chosen > 4)) {
+                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 atau 4: ");
             }
-        } while (choose < 1 || choose > 4);
+        } while (chosen < 1 || chosen > 4);
 
-        return choose;
+        return chosen;
 
     }
 
     public static int DeterminanType() {
         Scanner sc = new Scanner(System.in);
-        int choose;
+        OperasiDasarMatrix operasi = new OperasiDasarMatrix();
+        String choose;
+        int chosen = -9999;
         System.out.println("------------------------------");
         System.out.println("PILIHAN METODE PENENTUAN DETERMINAN");
         System.out.println("1. Metode reduksi baris");
@@ -84,19 +96,23 @@ public class MyApp {
         System.out.print("\nMasukkan pilihan (dalam angka): ");
 
         do {
-            choose = sc.nextInt();
-            if (choose < 1 || choose > 2) {
-                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 sampai 2: ");
+            choose = sc.nextLine();
+            chosen=(operasi.inputvalid(choose))? Integer.parseInt(choose) : chosen;
+            if ((chosen < 1 || chosen > 2)) {
+                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 atau 2: ");
             }
-        } while (choose < 1 || choose > 2);
+        } while (chosen < 1 || chosen > 2);
 
-        return choose;
+        return chosen;
+
 
     }
 
     public static int BalikanType() {
         Scanner sc = new Scanner(System.in);
-        int choose;
+        OperasiDasarMatrix operasi = new OperasiDasarMatrix();
+        String choose;
+        int chosen = -9999;
         System.out.println("------------------------------");
         System.out.println("PILIHAN METODE PENENTUAN BALIKAN/INVERSE");
         System.out.println("1. Metode eliminasi Gauss-Jordan");
@@ -104,19 +120,22 @@ public class MyApp {
         System.out.print("\nMasukkan pilihan (dalam angka): ");
 
         do {
-            choose = sc.nextInt();
-            if (choose < 1 || choose > 2) {
-                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 sampai 2: ");
+            choose = sc.nextLine();
+            chosen=(operasi.inputvalid(choose))? Integer.parseInt(choose) : chosen;
+            if ((chosen < 1 || chosen > 2)) {
+                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 atau 2: ");
             }
-        } while (choose < 1 || choose > 2);
+        } while (chosen < 1 || chosen > 2);
 
-        return choose;
+        return chosen;
 
     }
 
     public static int RegresiType() {
         Scanner sc = new Scanner(System.in);
-        int choose;
+        OperasiDasarMatrix operasi = new OperasiDasarMatrix();
+        String choose;
+        int chosen = -9999;
         System.out.println("------------------------------");
         System.out.println("PILIHAN JENIS REGRESI");
         System.out.println("1. Regresi linier berganda");
@@ -124,19 +143,22 @@ public class MyApp {
         System.out.print("\nMasukkan pilihan (dalam angka): ");
 
         do {
-            choose = sc.nextInt();
-            if (choose < 1 || choose > 2) {
-                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 sampai 2: ");
+            choose = sc.nextLine();
+            chosen=(operasi.inputvalid(choose))? Integer.parseInt(choose) : chosen;
+            if ((chosen < 1 || chosen > 2)) {
+                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 atau 2: ");
             }
-        } while (choose < 1 || choose > 2);
+        } while (chosen < 1 || chosen > 2);
 
-        return choose;
+        return chosen;
     }
 
 
     public static int saveOutput() {
         Scanner sc = new Scanner(System.in);
-        int choose;
+        OperasiDasarMatrix operasi = new OperasiDasarMatrix();
+        String choose;
+        int chosen = -9999;
         System.out.println("------------------------------");
         System.out.println("Simpan jawaban dalam file?");
         System.out.println("1. Simpan");
@@ -144,13 +166,14 @@ public class MyApp {
         System.out.print("\nMasukkan pilihan (dalam angka): ");
 
         do {
-            choose = sc.nextInt();
-            if (choose < 1 || choose > 2) {
-                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 sampai 2: ");
+            choose = sc.nextLine();
+            chosen=(operasi.inputvalid(choose))? Integer.parseInt(choose) : chosen;
+            if ((chosen < 1 || chosen > 2)) {
+                System.out.print("Pilihan tidak valid. Masukkan angka antara 1 atau 2: ");
             }
-        } while (choose < 1 || choose > 2);
+        } while (chosen < 1 || chosen > 2);
 
-        return choose;
+        return chosen;
     }
 
 
@@ -163,14 +186,16 @@ public class MyApp {
         Determinan det = new Determinan();
         InterpolasiPolinomial interpolasi = new InterpolasiPolinomial();
         RegresiBerganda RB = new RegresiBerganda();
+        BicubicInterpolation bicubic = new BicubicInterpolation();
+        Imageresizer imageresizer = new Imageresizer();
         Scanner sc = new Scanner(System.in);
         boolean running = true;
 
         while (running) {
             int choice = menu();
             int inputMethod = 0;
-            if (choice != 7) {
-            inputMethod = InputType();}
+            if (!(choice != 7 || choice != 8)) { //kalo tidak keluar
+            inputMethod = InputType();} //pilih cara input
 
             switch (choice) {
                 case 1:
@@ -178,8 +203,38 @@ public class MyApp {
                     // Sistem Persamaan Linier (SPL)
                     int splMethod = SPLType();
 
+                    //implementasi
                     if (splMethod == 1) { //eliminasi gauss
-                        //implementasi
+                        String nama;
+                        Matrix m = new Matrix();
+                        if (inputMethod == 1) {
+                            m = operasi.readSPL();
+                        }
+                        else {
+                            System.out.print("Masukkan nama file input: ");
+                            nama = sc.nextLine();
+                            operasi.readMatrixFile(nama,m); //ada bug
+                        }
+                        gauss.GausMethod(m);
+                        ArrayList<String> answer=gauss.backsubs(m);
+                        int save = saveOutput();
+                        if (save == 1) {
+                            String file = sc.nextLine();
+                            // Menggunakan try-with-resources untuk menulis file dengan aman
+                            try (FileWriter myWriter = new FileWriter("solusi_" + file + ".txt")) {
+                                // Menulis setiap elemen jawaban ke file
+                                for (String line : answer) {
+                                    myWriter.write(line + "\n");
+                                }
+                                System.out.println("Jawaban berhasil disimpan di solusi_" + file + ".txt");
+                            } 
+                            catch (IOException e) {
+                                System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
+                            }
+                        } 
+                        else {
+                            System.out.println("Jawaban tidak disimpan.");
+                        }
                     }
                     else if (splMethod == 2) { //gauss jordan
                         Matrix m = new Matrix();
@@ -193,10 +248,10 @@ public class MyApp {
                         }
 
                         if (m.get_COL_EFF() != 0 && m.get_ROW_EFF() != 0) {
-                       String solusi[] =  gj.solveSPL(m);
-                       if (solusi != null) {
-                           for (int i = 0; i < solusi.length; i++) {
-                               System.out.println(solusi[i]);
+                            String solusi[] =  gj.solveSPL(m);
+                            if (solusi != null) {
+                                for (int i = 0; i < solusi.length; i++) {
+                                    System.out.println(solusi[i]);
                            }
                        }
                        int save = saveOutput();
@@ -438,7 +493,20 @@ public class MyApp {
 
                     // Interpolasi Bicubic Spline
                     //implementasi
-
+                    BicubicInterpolation filebicubic = new BicubicInterpolation();
+                    Matrix matriks = new Matrix();
+                    ArrayList<Double> xy= new ArrayList<>();
+                    if (inputMethod == 1) {
+                        bicubic.inputManualF();
+                        bicubic.SolutionBicubic(xy,null);
+                    } 
+                    else {
+                        System.out.print("Masukkan nama file input: ");
+                        String nama = sc.nextLine();
+                        xy=operasi.inputfilebicubic(nama, matriks);
+                        bicubic.SolutionBicubic(xy,matriks);
+                    }
+                    
                     break;
 
                 case 6: // Regresi Linier dan Kuadratik Berganda
@@ -462,6 +530,32 @@ public class MyApp {
                     break;
 
                 case 7:
+                    Imageresizer resize = new Imageresizer();
+                    // Path gambar input
+                    System.out.println("Silahkan tuliskan path dari gambar anda:");
+                    String pathfoto = sc.nextLine();
+                    String imagePath = "test\\"+pathfoto; 
+                    resize.inputImage(imagePath);
+
+                    if (resize.getImage() == null) { // Kalo kosong keluar
+                        break;
+                    }
+
+                    System.out.println("Silahkan Input Skala Panjang:");
+                    double Scalex = sc.nextDouble();
+                    System.out.println("Silahkan Input Skala Tinggi:");
+                    double Scaley = sc.nextDouble();
+                    
+                
+                    // Resize
+                    System.out.println("Proses resize sedang berlangsung...");
+                    resize.resizer(Scalex,Scaley);
+                
+                    resize.displayImage("resized_image1.png");
+                    System.out.println("Proses selesai!");
+                    
+
+                case 8:
                     // Keluar
                     running = false;
                     System.out.println("Keluar dari program.");
