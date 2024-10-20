@@ -531,6 +531,10 @@ public class MyApp {
 
                 case 7:
                     Imageresizer resize = new Imageresizer();
+                    double Scalex;
+                    double Scaley;
+                    String scaleString;
+                    double scale = -9999;
                     // Path gambar input
                     System.out.println("Silahkan tuliskan path dari gambar anda:");
                     String pathfoto = sc.nextLine();
@@ -540,12 +544,22 @@ public class MyApp {
                     if (resize.getImage() == null) { // Kalo kosong keluar
                         break;
                     }
-
-                    System.out.println("Silahkan Input Skala Panjang:");
-                    double Scalex = sc.nextDouble();
-                    System.out.println("Silahkan Input Skala Tinggi:");
-                    double Scaley = sc.nextDouble();
-                    
+                    do{
+                        System.out.println("Silahkan Input Skala Panjang:");
+                        scaleString = sc.nextLine();
+                        Scalex = operasi.inputvalid(scaleString) ? Double.parseDouble(scaleString) : scale;
+                        if (Scalex<=0){
+                            System.out.println("Silahkan Input Skala Panjang dengan tepat");
+                        }
+                    }while(Scalex<=0);
+                    do{
+                        System.out.println("Silahkan Input Skala Tinggi:");
+                        scaleString = sc.nextLine();
+                        Scaley = operasi.inputvalid(scaleString) ? Double.parseDouble(scaleString) : scale;
+                        if (Scaley<=0){
+                            System.out.println("Silahkan Input Skala Tinggi dengan tepat");
+                        }
+                    }while(Scaley<=0);
                 
                     // Resize
                     System.out.println("Proses resize sedang berlangsung...");
