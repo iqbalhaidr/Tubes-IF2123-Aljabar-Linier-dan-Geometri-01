@@ -218,15 +218,16 @@ public class EliminasiGaus {
                     check=true;
                     for (int j=col+1; j<matriks.colEff-1; j++){
                         if (parameter[j] || arr[j]==0 ){
-                            if(matriks.m[row][j]!=0 &&  matriks.m[row][j]>0){
-                                result=result+" - "+matriks.m[row][j]+"X"+(j+1);
-                            }
-                            else if(matriks.m[row][j]!=0 &&  matriks.m[row][j]<0){
-                                result=result+" + "+((-1)*matriks.m[row][j])+"X"+(j+1);
+                            String formattedValue = String.format("%.2f", Math.abs(matriks.m[row][j]));
+
+                            if (matriks.m[row][j] > 0) {
+                                result = result + " - " + formattedValue + "X" + (j + 1);
+                            } else {
+                                result = result + " + " + formattedValue + "X" + (j + 1);
                             }
                         }
                     }
-                    result+=result+"\n";
+                    result+="\n";
                     save.add(result);
                     break;
                 }
