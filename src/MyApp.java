@@ -379,9 +379,53 @@ public class MyApp {
                     } } }
 
                     else if (DeterminanMethod == 2) { //kofaktor
-                        //implementasi
-                    }
+                        Matrix m = new Matrix();
+                        Determinan cofactor = new Determinan();
+                        double result=0;
+                        if (inputMethod == 1) {
+                            System.out.print("Masukkan banyak baris matriks: ");
+                            int row = sc.nextInt();
+                            System.out.print("Masukkan banyak kolom matriks: ");
+                            int col = sc.nextInt();
+                            operasi.createMatrix(m,row,col);
+                            System.out.println("Masukkan elemen-elemen matriks:");
+                            operasi.readMatrix(m,row,col);
+                        }
+                        else {
+                            System.out.print("Masukkan nama file: ");
+                            String nama = sc.nextLine();
+                            operasi.readMatrixFile(nama,m);
+                        }
+                    
+                        if (m.get_COL_EFF() != 0 && m.get_ROW_EFF() != 0) {
+                            if (!(operasi.isSquare(m))) {
+                                System.out.println("Matriks tidak memiliki determinan");
+                            }
+                            else {
+                                result =cofactor.kofaktor(m);
+                                System.out.printf("Hasil Determinannya adalah %f", result);
+                            }
+                            int save = saveOutput();
+                            if (save == 1) {
+                                System.out.print("Masukkan nama file: ");
+                                String filename = sc.nextLine();
 
+                                try {
+                                    FileWriter writer = new FileWriter("solusi" + filename + ".txt");
+                                    writer.write("determinan = " + result);
+                                    writer.close();
+                                    System.out.println("Jawaban berhasil disimpan di solusi" + filename + ".txt");
+                                } 
+                                catch (IOException e) {
+                                    System.out.println("Terjadi kesalahan saat menyimpan file.");
+                                }
+
+                            }
+                            else {
+                                System.out.println("Jawaban tidak disimpan");
+                            }
+                        }
+                    }
                     break;
 
                 case 3:
