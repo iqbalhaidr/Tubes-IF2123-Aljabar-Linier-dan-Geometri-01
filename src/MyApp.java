@@ -194,7 +194,7 @@ public class MyApp {
         while (running) {
             int choice = menu();
             int inputMethod = 0;
-            if ((choice != 7 || choice != 8)) { //kalo tidak keluar
+            if ((choice != 7 && choice != 8)) { //kalo tidak keluar
             inputMethod = InputType();} //pilih cara input
 
             switch (choice) {
@@ -213,9 +213,11 @@ public class MyApp {
                         else {
                             System.out.print("Masukkan nama file input: ");
                             nama = sc.nextLine();
-                            operasi.readMatrixFile(nama,m); //ada bug
+                            operasi.readMatrixFile(nama,m);
                         }
-                        gauss.GausMethod(m);
+
+                        if (m.get_COL_EFF() != 0 && m.get_ROW_EFF() != 0) {
+                            gauss.GausMethod(m);
                         ArrayList<String> answer=gauss.backsubs(m);
                         int save = saveOutput();
                         if (save == 1) {
@@ -234,7 +236,7 @@ public class MyApp {
                         } 
                         else {
                             System.out.println("Jawaban tidak disimpan.");
-                        }
+                        } }
                     }
                     else if (splMethod == 2) { //gauss jordan
                         Matrix m = new Matrix();
@@ -292,8 +294,8 @@ public class MyApp {
                             String nama = sc.nextLine();
                             operasi.readMatrixFile(nama, matriksAug);
                         }
-
-                        double[] answer = spl.SPLInverse(matriksAug);
+                        if (matriksAug.get_COL_EFF() != 0 && matriksAug.get_ROW_EFF() != 0) {
+                            double[] answer = spl.SPLInverse(matriksAug);
                         spl.displaySPLCramer(answer);
 
                         int save = saveOutput();
@@ -301,7 +303,7 @@ public class MyApp {
                             spl.writeSPL(answer);
                         } else {
                             System.out.println("Jawaban tidak disimpan");
-                        }
+                        } }
 
                     } else { //metode cramer
                         Matrix matriksAug = new Matrix();
@@ -313,7 +315,9 @@ public class MyApp {
                             operasi.readMatrixFile(nama, matriksAug);
                         }
 
-                        double[] answer = spl.SPLCramer(matriksAug);
+                        if (matriksAug.get_COL_EFF() != 0 && matriksAug.get_ROW_EFF() != 0) {
+
+                            double[] answer = spl.SPLCramer(matriksAug);
                         spl.displaySPLCramer(answer);
 
                         int save = saveOutput();
@@ -322,7 +326,7 @@ public class MyApp {
                         } else {
                             System.out.println("Jawaban tidak disimpan");
                         }
-                    }
+                    } }
 
                     break;
 
@@ -436,8 +440,8 @@ public class MyApp {
                             String nama = sc.nextLine();
                             operasi.readMatrixFile(nama, matriks);
                         }
-
-                        if (!(operasi.isSquare(matriks)) || det.kofaktor(matriks) == 0) {
+                        if (matriks.get_COL_EFF() != 0 && matriks.get_ROW_EFF() != 0) {
+                            if (!(operasi.isSquare(matriks)) || det.kofaktor(matriks) == 0) {
                             System.out.println("Matriks tidak memiliki matriks balikan");
                         } else {
                             operasi.displayMatrix(balikan.inverseWithAdj(matriks));
@@ -452,7 +456,7 @@ public class MyApp {
                                 System.out.println("Jawaban tidak disimpan");
                             }
                         }
-                    }
+                    } }
 
                     break;
 
@@ -520,12 +524,12 @@ public class MyApp {
                         String nama = sc.nextLine();
                         operasi.readMatrixFile(nama, matriksAug);
                     }
-
-                    if (regresiMethod == 1) {             // regresi linier
+                    if (matriksAug.get_COL_EFF() != 0 && matriksAug.get_ROW_EFF() != 0) {
+                        if (regresiMethod == 1) {             // regresi linier
                         RB.RegresiLinear(matriksAug);
                     } else {                              //regresi kuadratik
                         RB.RegresiKuadratik(matriksAug);
-                    }
+                    } }
 
                     break;
 
