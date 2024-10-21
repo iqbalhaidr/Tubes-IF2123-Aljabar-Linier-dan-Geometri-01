@@ -194,7 +194,7 @@ public class MyApp {
         while (running) {
             int choice = menu();
             int inputMethod = 0;
-            if (!(choice != 7 || choice != 8)) { //kalo tidak keluar
+            if ((choice != 7 || choice != 8)) { //kalo tidak keluar
             inputMethod = InputType();} //pilih cara input
 
             switch (choice) {
