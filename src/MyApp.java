@@ -218,7 +218,7 @@ public class MyApp {
 
                         if (m.get_COL_EFF() != 0 && m.get_ROW_EFF() != 0) {
                             gauss.GausMethod(m);
-                        ArrayList<String> answer=gauss.backsubs(m);
+                        ArrayList<String> answer=gauss.backsubsperfected(m);
                         int save = saveOutput();
                         if (save == 1) {
                             String file = sc.nextLine();
@@ -403,7 +403,7 @@ public class MyApp {
                             }
                             else {
                                 result =cofactor.kofaktor(m);
-                                System.out.printf("Hasil Determinannya adalah %f", result);
+                                System.out.printf("Hasil Determinannya adalah %f\n", result);
                             }
                             int save = saveOutput();
                             if (save == 1) {

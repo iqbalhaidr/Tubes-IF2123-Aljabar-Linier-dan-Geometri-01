@@ -171,11 +171,14 @@ public class BicubicInterpolation {
         Matrix final_a = new Matrix();
         ODM.createMatrix(valueFinOneColumn, 16, 1);
         ODM.createMatrix(final_a, 4, 4);
-        valueFinOneColumn.m = (matriks!=null) ? convert2DTo1Column(matriksfile.m):convert2DTo1Column(matriks.m);
-
+        valueFinOneColumn.m = (matriksfile!=null) ? convert2DTo1Column(matriksfile.m):convert2DTo1Column(matriks.m);
         result= ODM.multiplyMatrix(Xmatriks, valueFinOneColumn);
         final_a=convert1Column_To_2d_4x4(result);
         return final_a;
+    }
+
+    public boolean isInRange(double x, double y) {
+        return (x >= 0 && x <= 1) && (y >= 0 && y <= 1);
     }
 
 
@@ -189,9 +192,17 @@ public class BicubicInterpolation {
 
         if (xy.size()==0){
             // Minta input dua angka dalam satu baris
-            System.out.print("Masukkan nilai (x,y): ");
-            x = scanner.nextDouble();
-            y = scanner.nextDouble();
+            do {
+                System.out.print("Masukkan nilai (x,y) dalam rentang [0, 1]: ");
+                x = scanner.nextDouble();
+                y = scanner.nextDouble();
+    
+                if (isInRange(x, y)) {
+                    System.out.println("Nilai yang dimasukkan valid.");
+                } else {
+                    System.out.println("Nilai tidak valid. Harap masukkan x dan y antara 0 dan 1.");
+                }
+            } while (!isInRange(x, y));
         }
         else{
             x=xy.get(0);
