@@ -217,8 +217,8 @@ public class EliminasiGaus {
                     result=result+((arr[col]!=0)? arr[col] : "");
                     check=true;
                     for (int j=col+1; j<matriks.colEff-1; j++){
-                        if (parameter[j] || arr[j]==0 ){
-                            String formattedValue = String.format("%.2f", Math.abs(matriks.m[row][j]));
+                        if ((parameter[j] || arr[j]==0) && matriks.m[row][j]!=0 ){
+                            String formattedValue = String.format("%f", Math.abs(matriks.m[row][j]));
 
                             if (matriks.m[row][j] > 0) {
                                 result = result + " - " + formattedValue + "X" + (j + 1);
