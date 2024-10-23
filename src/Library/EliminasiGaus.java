@@ -21,7 +21,7 @@ public class EliminasiGaus {
         double[] row2 = matriks.m[j];
         double constant=searchPivot(matriks, j)/searchPivot(matriks, i);
         for (int col=0; col<matriks.colEff; col++){
-            row2[col]=row2[col]-(constant*row1[col]);
+            row2[col]=Math.round((row2[col]-(constant*row1[col]))* 1e15) / 1e15;
         }
     }
 
@@ -101,7 +101,7 @@ public class EliminasiGaus {
                     continue;
                 }
                 else{
-                    swap(matriks, col, notzero);
+                    swap(matriks, row_in_loop, notzero);
                 }
                 for (int row=row_in_loop; row<matriks.rowEff; row++){
                     makeValueBelowPivotZero(matriks, row , col);   
@@ -118,6 +118,7 @@ public class EliminasiGaus {
         }
 
         simplify(matriks);
+        ODM.displayMatrix(matriks);
     }    
 
     //prosedur untuk mencari nilai solusi yang ada dan memprintnya
