@@ -1,4 +1,7 @@
-package Library;
+package AplikasiSPL;
+
+import Library.Matrix;
+import Library.OperasiDasarMatrix;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -6,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.util.List;
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;

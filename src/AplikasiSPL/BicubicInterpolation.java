@@ -1,9 +1,11 @@
-package Library;
+package AplikasiSPL;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import Library.BicubicInterpolation;
 
+import Library.Matrix;
+import Library.OperasiDasarMatrix;
+import Library.gaussjordan;
 
 
 public class BicubicInterpolation {
