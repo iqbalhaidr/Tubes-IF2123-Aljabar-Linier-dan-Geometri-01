@@ -19,7 +19,6 @@ public class RegresiBerganda {
         double[] answer = solveRegresiLinear(matriksAug);
         double taksiran;
 
-        System.out.println();
         displayRegresiLinear(answer);
         taksiran = calculateYLinear(answer);
         writeRegresiLinear(answer, taksiran);
@@ -30,6 +29,7 @@ public class RegresiBerganda {
     public void RegresiKuadratik(Matrix matriksAug) {
         double[] answer = solveRegresiKuadratik(matriksAug);
         double taksiran;
+
         displayRegresiKuadratik(answer, matriksAug.get_COL_EFF()-1);
         taksiran = calculateYKuadratik(answer, matriksAug.get_COL_EFF()-1);
         writeRegresiKuadratik(answer, matriksAug.get_COL_EFF()-1, taksiran);
@@ -49,8 +49,7 @@ public class RegresiBerganda {
             y.set_ELMT(i, 0, matriksAug.get_ELMT(i, matriksAug.get_COL_EFF()-1));  //copy elmt untuk matriks y (nilai variabel dependen)
         }
         Matrix matriksMerge = ODM.mergeMatrix(ODM.multiplyMatrix(MB.transpose(X), X), ODM.multiplyMatrix(MB.transpose(X), y));
-        EG.GausMethod(matriksMerge);
-        return EG.backsubsV2(matriksMerge);
+        return GJ.solveSPL2(matriksMerge);
     }
 
     /*I.S. koefRegresi adalah array satu dimensi berisi koefisien persamaan regresi linear berganda
@@ -168,8 +167,7 @@ public class RegresiBerganda {
         }
 
         Matrix matriksMerge = ODM.mergeMatrix(ODM.multiplyMatrix(MB.transpose(X), X), ODM.multiplyMatrix(MB.transpose(X), y));
-        EG.GausMethod(matriksMerge);
-        return EG.backsubsV2(matriksMerge);
+        return GJ.solveSPL2(matriksMerge);
     }
 
     /*I.S. coefficients adalah array satu dimensi berisi koefisien persamaan regresi kuadratik berganda, n adalah jumlah variabel independen
