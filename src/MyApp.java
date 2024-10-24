@@ -270,6 +270,7 @@ public class MyApp {
                         if (m.get_COL_EFF() != 0 && m.get_ROW_EFF() != 0) {
                             String solusi[] =  gj.solveSPL(m);
                             if (solusi != null) {
+                                System.out.println("\nSolusi SPL adalah");
                                 for (int i = 0; i < solusi.length; i++) {
                                     System.out.println(solusi[i]);
                            }
