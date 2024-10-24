@@ -14,7 +14,7 @@ public class MyApp {
         int chosen = -9999;
 
         // Display the menu
-        System.out.println("------------------------------");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("MENU");
         System.out.println("1. Sistem Persamaan Linier");
         System.out.println("2. Determinan");
@@ -42,7 +42,7 @@ public class MyApp {
         OperasiDasarMatrix operasi = new OperasiDasarMatrix();
         String choose;
         int chosen = -9999;
-        System.out.println("------------------------------");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("PILIHAN METODE MASUKAN/INPUT");
         System.out.println("1. Input dari keyboard");
         System.out.println("2. Input dari file");
@@ -64,7 +64,7 @@ public class MyApp {
         OperasiDasarMatrix operasi = new OperasiDasarMatrix();
         String choose;
         int chosen = -9999;
-        System.out.println("------------------------------");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("PILIHAN METODE PENYELESAIAN SPL");
         System.out.println("1. Metode eliminasi Gauss");
         System.out.println("2. Metode eliminasi Gauss-Jordan");
@@ -89,7 +89,7 @@ public class MyApp {
         OperasiDasarMatrix operasi = new OperasiDasarMatrix();
         String choose;
         int chosen = -9999;
-        System.out.println("------------------------------");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("PILIHAN METODE PENENTUAN DETERMINAN");
         System.out.println("1. Metode reduksi baris");
         System.out.println("2. Metode ekspansi kofaktor");
@@ -113,7 +113,7 @@ public class MyApp {
         OperasiDasarMatrix operasi = new OperasiDasarMatrix();
         String choose;
         int chosen = -9999;
-        System.out.println("------------------------------");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("PILIHAN METODE PENENTUAN BALIKAN/INVERSE");
         System.out.println("1. Metode eliminasi Gauss-Jordan");
         System.out.println("2. Metode adjoin");
@@ -136,7 +136,7 @@ public class MyApp {
         OperasiDasarMatrix operasi = new OperasiDasarMatrix();
         String choose;
         int chosen = -9999;
-        System.out.println("------------------------------");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("PILIHAN JENIS REGRESI");
         System.out.println("1. Regresi linier berganda");
         System.out.println("2. Regresi kuadratik berganda");
@@ -159,7 +159,7 @@ public class MyApp {
         OperasiDasarMatrix operasi = new OperasiDasarMatrix();
         String choose;
         int chosen = -9999;
-        System.out.println("------------------------------");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("Simpan jawaban dalam file?");
         System.out.println("1. Simpan");
         System.out.println("2. Tidak");
@@ -191,7 +191,25 @@ public class MyApp {
         Scanner sc = new Scanner(System.in);
         boolean running = true;
 
+        System.out.println("####################################################################################################################################################################################");
+        System.out.println("#                                                                                                                                                                                  #");
+        System.out.println("#                                                                                                                                                                                  #");
+        System.out.println("#     ____.  _____  __      __  _____       _____  ________      _____  .____       _____    ___ ___    ____  __.________  ___________ __________________ ____.___                 #");
+        System.out.println("#    |    | /  _  \\/  \\    /  \\/  _  \\     /  _  \\ \\______ \\    /  _  \\ |    |     /  _  \\  /   |   \\  |    |/ _|\\_____  \\ \\_   _____/ \\      \\__    ___/|    |   |                #");
+        System.out.println("#    |    |/  /_\\  \\   \\/\\/   /  /_\\  \\   /  /_\\  \\ |    |  \\  /  /_\\  \\|    |    /  /_\\  \\/    ~    \\ |      <   /   |   \\ |    __)_  /   |   \\|    |   |    |   |                #");
+        System.out.println("# /\\__|    /    |    \\        /    |    \\ /    |    \\|    `   \\/    |    \\    |___/    |    \\    Y    / |    |  \\ /    |    \\|        \\/    |    \\    /\\__|    |   |              #");
+        System.out.println("# \\________\\____|__  /\\__/\\  /\\____|__  / \\____|__  /_______  /\\____|__  /_______ \\____|__  /\\___|_  /  |____|__ \\\\_______  /_______  /\\____|__  /____\\________|___|              #");
+        System.out.println("#                  \\/      \\/         \\/          \\/        \\/         \\/        \\/       \\/       \\/           \\/        \\/        \\/         \\/                               #");
+        System.out.println("#                                                                                                                                                                                  #");
+        System.out.println("#                                                        SELAMAT DATANG DI PROGRAM KALKULATOR TERBAIK BANGSA                                                                                                                 #");
+        System.out.println("####################################################################################################################################################################################");
+
         while (running) {
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             int choice = menu();
             int inputMethod = 0;
             if ((choice != 7 && choice != 8)) { //kalo tidak keluar
