@@ -85,7 +85,6 @@ public class InterpolasiPolinomial {
     public double SolveInterpolasi(Matrix m, boolean inputfile) {
         double x = 0;
         double[] numbers = null;
-        String[] result = null;
         double y = -999999; //mark
 
         if (!inputfile) {
@@ -98,13 +97,8 @@ public class InterpolasiPolinomial {
             Matrix mInterpolasi = ToMatrixInterpolasi(mPoint);
 
             numbers = new double[mInterpolasi.get_COL_EFF() - 1];
-            result = gj.solveSPL(mInterpolasi);
+            numbers = gj.solveSPL2(mInterpolasi);
 
-            for (int i = 0; i < mInterpolasi.get_COL_EFF() - 1; i++) {
-                String[] parts = result[i].split("=");
-                String numberString = parts[1].trim();
-                numbers[i] = Double.parseDouble(numberString);
-            }
 
             System.out.print("\nPersamaan polinomial: ");
             printPolynomial(numbers);
@@ -133,13 +127,8 @@ public class InterpolasiPolinomial {
             Matrix mInterpolasi = ToMatrixInterpolasi(m);
 
             numbers = new double[mInterpolasi.get_COL_EFF() - 1];
-            result = gj.solveSPL(mInterpolasi);
+            numbers = gj.solveSPL2(mInterpolasi);
 
-            for (int i = 0; i < mInterpolasi.get_COL_EFF() - 1; i++) {
-                String[] parts = result[i].split("=");
-                String numberString = parts[1].trim();
-                numbers[i] = Double.parseDouble(numberString);
-            }
 
                 System.out.print("\nPersamaan polinomial: ");
                 printPolynomial(numbers);

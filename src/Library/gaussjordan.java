@@ -238,6 +238,16 @@ public class gaussjordan {
         return null;
     }
 
+    public double[] solveSPL2(Matrix m) {
+        ToEchelonRed(m);
+        double solution[] = new double[m.get_ROW_EFF()];
+        for (int row = 0; row <= operasi.getLastIdxRow(m);row++) {
+            solution[row] += (m.get_ELMT(row,operasi.getLastIdxCol(m)));
+        }
+        return solution;
+        }
+
+
     public double DeterminantOBE(Matrix m) {
         int c = 0;
         int swapcount = 0;
