@@ -249,7 +249,7 @@ public class OperasiDasarMatrix {
 
         Matrix matriksAug = new Matrix();
         createMatrix(matriksAug, m, n+1);
-        System.out.print("Masukkan data sampel perbaris x11 x21 x31 ... xn1 y\n");
+        System.out.print("\nMasukkan data sampel perbaris x11 x21 x31 ... xn1 y\n");
         readMatrix(matriksAug, m, n+1);
         return matriksAug;
     }

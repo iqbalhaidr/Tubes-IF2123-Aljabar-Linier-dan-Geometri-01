@@ -55,7 +55,7 @@ public class RegresiBerganda {
     /*I.S. koefRegresi adalah array satu dimensi berisi koefisien persamaan regresi linear berganda
       F.S. persamaan regresi linear tampil di layar dengan format y = b0 + b1x1 + b2x2 + ... + bnxn*/
     public void displayRegresiLinear(double[] koefRegresi) {
-        StringBuilder result = new StringBuilder("y = ");
+        StringBuilder result = new StringBuilder("\ny = ");
         result.append(koefRegresi[0]);
 
         for (int i = 1; i < koefRegresi.length; i++) {
@@ -68,6 +68,7 @@ public class RegresiBerganda {
         }
 
         System.out.println(result.toString());
+        System.out.print("\n");
     }
 
     /*parameter: koefRegresi adalah array satu dimensi berisi koefisien persamaan regresi linear berganda
@@ -173,7 +174,7 @@ public class RegresiBerganda {
     /*I.S. coefficients adalah array satu dimensi berisi koefisien persamaan regresi kuadratik berganda, n adalah jumlah variabel independen
       F.S. persamaan regresi kuadratik tampil di layar*/
     public void displayRegresiKuadratik(double[] coefficients, int n) {
-        StringBuilder result = new StringBuilder("y = ");
+        StringBuilder result = new StringBuilder("\ny = ");
         result.append(coefficients[0]);
     
         for (int i = 1; i <= n; i++) { // untuk koefisien linier untuk x1 sampai xn
@@ -206,6 +207,7 @@ public class RegresiBerganda {
         }
     
         System.out.println(result.toString()); // cetak persamaan regresi kuadratik
+        System.out.print("\n");
     }
     
     /*parameter: coefficients adalah array satu dimensi berisi koefisien persamaan regresi kuadratik berganda, n adalah jumlah variabel independen
