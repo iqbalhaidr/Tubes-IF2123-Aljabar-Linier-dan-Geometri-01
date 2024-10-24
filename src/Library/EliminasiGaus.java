@@ -192,21 +192,27 @@ public class EliminasiGaus {
     }
 
     public ArrayList<String> backsubsperfected(Matrix m){
+        ArrayList<String> save = new ArrayList<>();
         boolean unique =true;
-        for (int i =0; i<m.rowEff-1; i++){
-            int idx = searchLeadingone(m.m[i], m.colEff-1);
-            if (idx==-1){
+        for (int i =0; i<m.rowEff; i++){
+            int idx = searchLeadingone(m.m[i], (m.colEff)-1);
+            if (idx==-1 && m.m[i][m.colEff - 1] != 0){
+                save.add("Tidak ada solusi.");
+                System.out.println("Tidak ada solusi.");
+                return save;
+            }
+            else if (idx==-1){
                 unique=false;
+                break;
             }
         }
         if (m.colEff-1!=m.rowEff){
             unique=false;
         }
-        ArrayList<String> save = new ArrayList<>();
+ 
         if (unique){
             double[] jawabanUnik= new double[m.rowEff];
             String result ="";
-            
             for (int row=m.rowEff-1; row>=0; row--){
                 int idx=searchLeadingone(m.m[row], m.rowEff);
                 jawabanUnik[row] = m.m[row][m.colEff-1];
@@ -228,7 +234,6 @@ public class EliminasiGaus {
             for (int i=0; i<m.colEff-1; i++){ //array penanda mana variabel bebas mana tidak
                 parametric[i]=true;
             }
-
             for (int i=m.rowEff-1; i>=0; i--){ //dalam for ini backsubs
                 int idx= searchLeadingone(m.m[i], m.colEff-1);
                 if (i==m.rowEff-1){
@@ -240,11 +245,6 @@ public class EliminasiGaus {
                         }
                     }
                 }    
-                else if (idx ==-1 && m.m[m.rowEff - 1][m.colEff - 1] != 0){
-                    save.add("Tidak ada solusi.");
-                    System.out.println("Tidak ada solusi.");
-                    return save;
-                }
                 else{
                     if (idx !=-1){
                         parametric[idx]=false;
@@ -256,8 +256,6 @@ public class EliminasiGaus {
                             for (int lead=parametric.length-1; lead>idx;lead--){
                                 if (lead==col && m.m[i][col]!=0 && !parametric[lead]){
                                     int l=searchindexnonzero(m, col, i);
-                                    System.out.println("ini x yang mau di subs");
-                                    System.out.println(l);
                                     double pengali=m.m[i][col];
                                     for (int z=col+1; z<m.colEff; z++){
                                         m.m[i][z]=m.m[i][z]+m.m[l][z]*pengali;
