@@ -16,7 +16,7 @@ public class testCramer {
         ODM.readMatrix(matriksAug, matriksAug.get_ROW_EFF(), matriksAug.get_COL_EFF());
 
         //System.out.println(Arrays.toString(SSPL.SPLCramer(matriksAug)));
-        SSPL.displaySPLCramer(SSPL.SPLCramer(matriksAug));
+        SSPL.displaySPL(SSPL.SPLCramer(matriksAug));
 
     }
 }
