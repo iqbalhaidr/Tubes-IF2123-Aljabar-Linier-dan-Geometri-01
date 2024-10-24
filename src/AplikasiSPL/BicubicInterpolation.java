@@ -184,7 +184,7 @@ public class BicubicInterpolation {
     }
 
 
-    public void SolutionBicubic (ArrayList<Double> xy, Matrix matriks){
+    public String SolutionBicubic (ArrayList<Double> xy, Matrix matriks){
         Scanner scanner = new Scanner(System.in);
         makeCoeff();
         Matrix Result_a;
@@ -217,8 +217,9 @@ public class BicubicInterpolation {
                 result+= Result_a.m[i][j]*pangkat(x, i)*pangkat(y, j);
             }
         }
-
-        System.out.printf("Hasil: %f\n\n", result);
+        String kalimat = String.format("Hasil f(%.2f, %.2f) adalah %.2f\n\n", x, y, result);
+        System.out.println(kalimat);
+        return kalimat;
 
     }
 
