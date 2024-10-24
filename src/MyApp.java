@@ -282,7 +282,7 @@ public class MyApp {
                            try {
                                FileWriter myWriter = new FileWriter("solusi" + filename + ".txt");
                                if (solusi == null) {
-                                   myWriter.write("Tidak ada solusi");
+                                   myWriter.write("SPL tidak memiliki solusi");
                                }
                                else {
                                    for (int i = 0; i < solusi.length; i++) {

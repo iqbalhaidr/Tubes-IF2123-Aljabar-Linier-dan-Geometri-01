@@ -113,6 +113,8 @@ public class gaussjordan {
 
     public String[] solveSPL(Matrix m) {
         ToEchelonRed(m);
+        System.out.println("\nHasil matriks eselon baris tereduksi: ");
+        operasi.displayMatrix(m);
         int flag = 1; //solusi unik
         boolean allzero = true;
 
@@ -135,7 +137,7 @@ public class gaussjordan {
 
 
         if (flag == 3) {
-            System.out.println("Tidak ada solusi");
+            System.out.println("\n SPL tidak memiliki solusi");
 
         }
 //        else if (flag == 1) {
