@@ -48,4 +48,4 @@ Kelompok 33 - Jawa adalah Koentji
  1. Ferdinand Gabe Tua Sinaga (13523051)
 
 2. Henry Filberto Shenelo (13523108)
-3. Muhammad Iqbal Haidar (13522111)
+3. Muhammad Iqbal Haidar (13523111)
