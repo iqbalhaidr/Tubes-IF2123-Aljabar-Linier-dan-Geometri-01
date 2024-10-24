@@ -21,7 +21,7 @@ public class EliminasiGaus {
         double[] row2 = matriks.m[j];
         double constant=searchPivot(matriks, j)/searchPivot(matriks, i);
         for (int col=0; col<matriks.colEff; col++){
-            row2[col]=Math.round((row2[col]-(constant*row1[col]))* 1e15) / 1e15;
+            row2[col]=Math.round((row2[col]-(constant*row1[col]))* 1e16) / 1e16;
         }
     }
 
@@ -39,7 +39,7 @@ public class EliminasiGaus {
     // Cari baris non-nol pertama dalam kolom
     public int searchindexnonzero (Matrix matriks, int index, int rownow){
         for (int col=index; col<matriks.colEff; col++){
-            for (int row=rownow; row<matriks.rowEff; row++){
+            for (int row=rownow+1; row<matriks.rowEff; row++){
                 if (matriks.m[row][col]!=0){
                     return row;
                 }
@@ -118,7 +118,6 @@ public class EliminasiGaus {
         }
 
         simplify(matriks);
-        ODM.displayMatrix(matriks);
     }    
 
     //prosedur untuk mencari nilai solusi yang ada dan memprintnya
@@ -228,19 +227,29 @@ public class EliminasiGaus {
                         for (int j= idx+1; j<m.colEff-1;j++){
                             m.m[i][j]=m.m[i][j]*-1.0;
                         }
+
                         for (int col=idx+1; col<m.colEff; col++){
-                            if (m.m[i+1][col]==1){
-                                double pengali=m.m[i][col];
-                                for (int z=col+1; z<m.colEff; z++){
-                                    m.m[i][z]=m.m[i][z]+m.m[i+1][z]*pengali;
+                            for (int lead=parametric.length-1; lead>idx;lead--){
+                                if (lead==col && m.m[i][col]!=0 && !parametric[lead]){
+                                    int l=searchindexnonzero(m, col, i);
+                                    System.out.println("ini x yang mau di subs");
+                                    System.out.println(l);
+                                    double pengali=m.m[i][col];
+                                    for (int z=col+1; z<m.colEff; z++){
+                                        m.m[i][z]=m.m[i][z]+m.m[l][z]*pengali;
+                                    }
+                                    m.m[i][col]=0;
+                                    System.out.println("");
+                                    break;
                                 }
-                                m.m[i][col]=0;
-                                break;
                             }
+                            
                         }
+                        
                     }
                 }
             }
+
             
             save.add("Solusi untuk SPL mu:\n");
             System.out.println("Solusi untuk SPL mu:");
@@ -255,13 +264,13 @@ public class EliminasiGaus {
                         }
                         for (int j=col+1; j<m.colEff-1; j++){
                             if (m.m[row][j]!=0 && m.m[row][j]>0 && counter>=0){
-                                result+=" + "+((m.m[row][j] >1) ? (String.valueOf(m.m[row][j])+"X"+j) : ("X"+(j+1)));
+                                result+=" + "+((m.m[row][j] >1) ? (String.valueOf(m.m[row][j])+"X"+(j+1)) : ("X"+(j+1)));
                             }
                             else if (m.m[row][j]!=0 && m.m[row][j]<0 && counter>=0){
                                 result+=" - "+ ((Math.abs(m.m[row][j]) >1) ? (String.valueOf(m.m[row][j])+"X"+(j+1)) : ("X"+(j+1)));
                             }
                             else if (m.m[row][j]!=0 && m.m[row][j]>0 && counter<0){
-                                result+=((m.m[row][j] >1) ? (String.valueOf(m.m[row][j])+"X"+j) : ("X"+(j+1)));
+                                result+=((m.m[row][j] >1) ? (String.valueOf(m.m[row][j])+"X"+(j+1)) : ("X"+(j+1)));
                                 counter+=1;
                             }
                             else if (m.m[row][j]!=0 && m.m[row][j]<0 && counter<0){
@@ -269,6 +278,9 @@ public class EliminasiGaus {
                                 counter+=1;
                             }
                             
+                        }
+                        if (counter<0){
+                            result+=m.m[row][m.colEff - 1];
                         }
                         System.err.println(result);
                         save.add(result);
