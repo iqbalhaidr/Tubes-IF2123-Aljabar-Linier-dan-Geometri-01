@@ -36,6 +36,27 @@ public class EliminasiGaus {
         return -1;
     }
 
+    //cari pivot terbesar di kolom 
+    public int searchPivotRow(Matrix matrix, int col, int row_in_loop) {
+        int pivotRow = row_in_loop;
+        double maxValue = Math.abs(matrix.m[row_in_loop][col]);
+    
+        for (int i = row_in_loop + 1; i < matrix.rowEff; i++) {
+            double absValue = Math.abs(matrix.m[i][col]);
+            if (absValue > maxValue) {
+                maxValue = absValue;
+                pivotRow = i;
+            }
+        }
+    
+        // Jika elemen terbesar adalah 0, kembalikan -1 untuk menunjukkan kegagalan
+        if (maxValue == 0.0) {
+            return -1;
+        }
+
+        return pivotRow;  // Mengembalikan indeks baris pivot
+    }
+
     // Cari baris non-nol pertama dalam kolom
     public int searchindexnonzero (Matrix matriks, int index, int rownow){
         for (int col=index; col<matriks.colEff; col++){
@@ -80,9 +101,9 @@ public class EliminasiGaus {
 
     public void simplify (Matrix matriks){
         for (int row=0; row<matriks.rowEff; row++){
-            double id=searchElementNonZeroInRow(matriks.m[row], matriks.colEff-1);
+            int id=searchElementNonZeroInRow(matriks.m[row], matriks.colEff-1);
             if (id!=-1){
-                double start=matriks.m[row][(int)id];
+                double start=matriks.m[row][id];
                 for (int col=row; col<matriks.colEff; col++){
                     matriks.set_ELMT(row,col,matriks.m[row][col]/start);
                 }
@@ -96,7 +117,7 @@ public class EliminasiGaus {
         for (int col=0; col<matriks.colEff-1; col++){
             if (matriks.m[row_in_loop][col]==0){
             
-                int notzero =searchindexnonzero(matriks, col, row_in_loop);
+                int notzero =searchPivotRow(matriks, col, row_in_loop);
                 if (notzero==-1){
                     continue;
                 }
@@ -109,9 +130,9 @@ public class EliminasiGaus {
                 row_in_loop+=1;
             }
             else if (matriks.m[row_in_loop][col]!=0){
-                for (int row=row_in_loop; row<matriks.rowEff; row++){
-                    makeValueBelowPivotZero(matriks, row , col);   
-                }
+                int i=searchPivotRow(matriks, col, row_in_loop);
+                swap(matriks, row_in_loop, i);
+                makeValueBelowPivotZero(matriks, row_in_loop , col);   
                 row_in_loop+=1;
             }
             
@@ -179,12 +200,7 @@ public class EliminasiGaus {
             unique=false;
         }
         ArrayList<String> save = new ArrayList<>();
-        if (m.m[m.rowEff - 1][m.colEff - 2] == 0 && m.m[m.rowEff - 1][m.colEff - 1] != 0) {
-            save.add("Tidak ada solusi.");
-            System.out.println("Tidak ada solusi.");
-            return save;
-        } 
-        else if (unique){
+        if (unique){
             double[] jawabanUnik= new double[m.rowEff];
             String result ="";
             
@@ -221,6 +237,11 @@ public class EliminasiGaus {
                         }
                     }
                 }    
+                else if (idx ==-1 && m.m[m.rowEff - 1][m.colEff - 1] != 0){
+                    save.add("Tidak ada solusi.");
+                    System.out.println("Tidak ada solusi.");
+                    return save;
+                }
                 else{
                     if (idx !=-1){
                         parametric[idx]=false;
