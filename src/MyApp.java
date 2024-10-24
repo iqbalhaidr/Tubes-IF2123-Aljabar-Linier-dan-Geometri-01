@@ -474,6 +474,7 @@ public class MyApp {
 
                         else {
                             Matrix m2 = gj.MatriksBalikan(m);
+                            System.out.println("\nHasil matriks balikan: ");
                             operasi.displayMatrix(m2);
                             int save = saveOutput();
                             if (save == 1) {
