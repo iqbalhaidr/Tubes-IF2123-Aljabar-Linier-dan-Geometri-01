@@ -264,7 +264,7 @@ public class OperasiDasarMatrix {
 
         Matrix matriksAug = new Matrix();
         createMatrix(matriksAug, row, col);
-        System.out.print("Masukkan Matriks Augmented\n");
+        System.out.print("\nMasukkan Matriks Augmented\n");
         readMatrix(matriksAug, row, col);
         return matriksAug;
     }

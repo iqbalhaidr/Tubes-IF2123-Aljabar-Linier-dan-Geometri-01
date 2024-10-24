@@ -153,7 +153,6 @@ public class MyApp {
         return chosen;
     }
 
-
     public static int saveOutput() {
         Scanner sc = new Scanner(System.in);
         OperasiDasarMatrix operasi = new OperasiDasarMatrix();
@@ -175,7 +174,6 @@ public class MyApp {
 
         return chosen;
     }
-
 
     public static void main(String[] args) {
         OperasiDasarMatrix operasi = new OperasiDasarMatrix();
@@ -238,6 +236,7 @@ public class MyApp {
                             System.out.println("Jawaban tidak disimpan.");
                         } }
                     }
+                    
                     else if (splMethod == 2) { //gauss jordan
                         Matrix m = new Matrix();
                         if (inputMethod == 1) {
@@ -294,16 +293,22 @@ public class MyApp {
                             String nama = sc.nextLine();
                             operasi.readMatrixFile(nama, matriksAug);
                         }
+
                         if (matriksAug.get_COL_EFF() != 0 && matriksAug.get_ROW_EFF() != 0) {
                             double[] answer = spl.SPLInverse(matriksAug);
-                        spl.displaySPLCramer(answer);
+                            if (answer != null) {
+                                spl.displaySPL(answer);
 
-                        int save = saveOutput();
-                        if (save == 1) {
-                            spl.writeSPL(answer);
-                        } else {
-                            System.out.println("Jawaban tidak disimpan");
-                        } }
+                                int save = saveOutput();
+                                if (save == 1) {
+                                    spl.writeSPL(answer);
+                                } else {
+                                    System.out.println("Jawaban tidak disimpan");
+                                }
+                            } else {
+                                System.out.println("Matriks tidak memiliki invers");
+                            }
+                        }
 
                     } else { //metode cramer
                         Matrix matriksAug = new Matrix();
@@ -316,17 +321,21 @@ public class MyApp {
                         }
 
                         if (matriksAug.get_COL_EFF() != 0 && matriksAug.get_ROW_EFF() != 0) {
-
                             double[] answer = spl.SPLCramer(matriksAug);
-                        spl.displaySPLCramer(answer);
+                            if (answer != null) {
+                                spl.displaySPL(answer);
 
-                        int save = saveOutput();
-                        if (save == 1) {
-                            spl.writeSPL(answer);
-                        } else {
-                            System.out.println("Jawaban tidak disimpan");
+                                int save = saveOutput();
+                                if (save == 1) {
+                                    spl.writeSPL(answer);
+                                } else {
+                                    System.out.println("Jawaban tidak disimpan");
+                                }
+                            } else {
+                                System.out.println("Determinan matriks sama dengan nol");
+                            } 
                         }
-                    } }
+                    }
 
                     break;
 
@@ -469,7 +478,8 @@ public class MyApp {
                                 System.out.println("Jawaban tidak disimpan");
                             }
                         }
-                    } } else { //Inverse Adjoin
+                    } 
+                    } else { //Inverse Adjoin
                         Matrix matriks = new Matrix();
                         if (inputMethod == 1) {
                             System.out.print("Masukkan banyak baris matriks: ");
@@ -479,28 +489,32 @@ public class MyApp {
                             operasi.createMatrix(matriks, row, col);
                             System.out.println("Masukkan elemen-elemen matriks:");
                             operasi.readMatrix(matriks, row, col);
+                            sc.nextLine();
                         } else {
                             System.out.print("Masukkan nama file: ");
                             String nama = sc.nextLine();
                             operasi.readMatrixFile(nama, matriks);
                         }
+
                         if (matriks.get_COL_EFF() != 0 && matriks.get_ROW_EFF() != 0) {
                             if (!(operasi.isSquare(matriks)) || det.kofaktor(matriks) == 0) {
-                            System.out.println("Matriks tidak memiliki matriks balikan");
-                        } else {
-                            operasi.displayMatrix(balikan.inverseWithAdj(matriks));
-                            int save = saveOutput();
-                            if (save == 1) {
-                                System.out.print("Masukkan nama file: ");
-                                String filename = sc.nextLine();
-                                filename = filename + ".txt";
-                                operasi.displayMatrixtoFile(balikan.inverseWithAdj(matriks), "test/" + filename);
-                                System.out.println("Jawaban berhasil disimpan di " + filename);
+                                System.out.println("Matriks tidak memiliki matriks balikan");
                             } else {
-                                System.out.println("Jawaban tidak disimpan");
+                                operasi.displayMatrix(balikan.inverseWithAdj(matriks));
+
+                                int save = saveOutput();
+                                if (save == 1) {
+                                    System.out.print("Masukkan nama file: ");
+                                    String filename = sc.nextLine();
+                                    filename = filename + ".txt";
+                                    operasi.displayMatrixtoFile(balikan.inverseWithAdj(matriks), "test/" + filename);
+                                    System.out.println("Jawaban berhasil disimpan di test/" + filename);
+                                } else {
+                                    System.out.println("Jawaban tidak disimpan");
+                                }
                             }
                         }
-                    } }
+                    }
 
                     break;
 
