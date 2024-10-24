@@ -562,16 +562,35 @@ public class MyApp {
                     BicubicInterpolation filebicubic = new BicubicInterpolation();
                     Matrix matriks = new Matrix();
                     ArrayList<Double> xy= new ArrayList<>();
+                    String result="";
                     if (inputMethod == 1) {
                         bicubic.inputManualF();
-                        bicubic.SolutionBicubic(xy,null);
+                        result=bicubic.SolutionBicubic(xy,null);
                     } 
                     else {
                         System.out.print("Masukkan nama file input: ");
                         String nama = sc.nextLine();
                         xy=operasi.inputfilebicubic(nama, matriks);
-                        bicubic.SolutionBicubic(xy,matriks);
+                        result=bicubic.SolutionBicubic(xy,matriks);
                     }
+                    int save = saveOutput();
+                    if (save == 1) {
+                        System.out.print("Masukkan nama file: ");
+                        String filename = sc.nextLine();
+
+                        try {
+                            FileWriter writer = new FileWriter("solusi" + filename + ".txt");
+                            writer.write(result);
+                            writer.close();
+                            System.out.println("Jawaban berhasil disimpan di solusi" + filename + ".txt");
+                        } catch (IOException e) {
+                            System.out.println("Terjadi kesalahan saat menyimpan file.");
+                        }
+
+                    }
+                    else {
+                        System.out.println("Jawaban tidak disimpan");
+                    } 
                     
                     break;
 
