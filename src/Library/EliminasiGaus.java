@@ -5,36 +5,7 @@ import java.util.List;
 
 public class EliminasiGaus {
     OperasiDasarMatrix ODM=new OperasiDasarMatrix();
-    public void swap(Matrix matriks, int i, int j){
-        if ((i<matriks.rowEff) && (j<matriks.rowEff)){
-            double[] row1 = matriks.m[i];
-            double[] row2 = matriks.m[j];
-            double[] temp=row1;
-            matriks.m[i]=row2;
-            matriks.m[j]=temp;
-        }
-    }
-
-    //mengurangi row i dengan n kali row j
-    public void plus_or_subtract_row (Matrix matriks, int i, int j){
-        double[] row1 = matriks.m[i];
-        double[] row2 = matriks.m[j];
-        double constant=searchPivot(matriks, j)/searchPivot(matriks, i);
-        for (int col=0; col<matriks.colEff; col++){
-            row2[col]=Math.round((row2[col]-(constant*row1[col]))* 1e16) / 1e16;
-        }
-    }
-
-    //cari pivot di baris
-    public double searchPivot (Matrix matriks, int rowinmtrx){
-        double[] row=matriks.m[rowinmtrx];
-        for (int col=0; col<matriks.rowEff; col++){
-            if (row[col]!=0){
-                return row[col]; //return elem pertama yang tidak 0
-            }
-        }
-        return -1;
-    }
+    gaussjordan gaussjordan = new gaussjordan();
 
     // Cari baris non-nol pertama dalam kolom
     public int searchindexnonzero (Matrix matriks, int index, int rownow){
@@ -48,78 +19,10 @@ public class EliminasiGaus {
         }
         return -1;
     }
-
-    // Fungsi untuk mengubah pivot menjadi positif jika negatif
-    public void makePivotPositive(Matrix matriks, int row_now) {
-        double pivot = searchPivot(matriks, row_now);
-        if (pivot < 0) {
-            for (int j = 0; j < matriks.colEff; j++) {
-                matriks.set_ELMT(row_now, j, matriks.m[row_now][j] * (-1));
-            }
-        }
-    }
-
-    //buat kolom dibawah pivot 0
-    public void makeValueBelowPivotZero (Matrix matriks, int row_now, int col){
-        for (int row=row_now+1; row<matriks.rowEff; row++){
-            if (matriks.m[row][col]!=0){
-                makePivotPositive(matriks, row_now);
-                plus_or_subtract_row(matriks, row_now, row);
-            }
-        }
-    }
-
-    public int searchElementNonZeroInRow(double[] arr, int length){
-        for (int i=0; i<length; i++){
-            if (arr[i]!=0){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public void simplify (Matrix matriks){
-        for (int row=0; row<matriks.rowEff; row++){
-            double id=searchElementNonZeroInRow(matriks.m[row], matriks.colEff-1);
-            if (id!=-1){
-                double start=matriks.m[row][(int)id];
-                for (int col=row; col<matriks.colEff; col++){
-                    matriks.set_ELMT(row,col,matriks.m[row][col]/start);
-                }
-            }
-        }
-    }
     
     //metode gauss
     public void GausMethod (Matrix matriks){
-        int row_in_loop=0;
-        for (int col=0; col<matriks.colEff-1; col++){
-            if (matriks.m[row_in_loop][col]==0){
-            
-                int notzero =searchindexnonzero(matriks, col, row_in_loop);
-                if (notzero==-1){
-                    continue;
-                }
-                else{
-                    swap(matriks, row_in_loop, notzero);
-                }
-                for (int row=row_in_loop; row<matriks.rowEff; row++){
-                    makeValueBelowPivotZero(matriks, row , col);   
-                }
-                row_in_loop+=1;
-            }
-            else if (matriks.m[row_in_loop][col]!=0){
-                for (int row=row_in_loop; row<matriks.rowEff; row++){
-                    makeValueBelowPivotZero(matriks, row , col);   
-                }
-                row_in_loop+=1;
-            }
-            
-        }
-
-        simplify(matriks);
-        ODM.displayMatrix(matriks);
-        System.out.println();
+        gaussjordan.ToEchelon(matriks);
     }    
 
     //prosedur untuk mencari nilai solusi yang ada dan memprintnya
@@ -171,22 +74,23 @@ public class EliminasiGaus {
 
     public ArrayList<String> backsubsperfected(Matrix m){
         boolean unique =true;
-        for (int i =0; i<m.rowEff-1; i++){
+        ArrayList<String> save = new ArrayList<>();
+        for (int i =0; i<m.rowEff; i++){
             int idx = searchLeadingone(m.m[i], m.colEff-1);
-            if (idx==-1){
+            if (idx==-1 && m.m[i][m.colEff - 1]!=0 ){
+                save.add("Tidak ada solusi.");
+                System.out.println("Tidak ada solusi.");
+                return save;
+                
+            }
+            else if(idx==-1){
                 unique=false;
             }
         }
         if (m.colEff-1!=m.rowEff){
             unique=false;
         }
-        ArrayList<String> save = new ArrayList<>();
-        if (m.m[m.rowEff - 1][m.colEff - 2] == 0 && m.m[m.rowEff - 1][m.colEff - 1] != 0) {
-            save.add("Tidak ada solusi.");
-            System.out.println("Tidak ada solusi.");
-            return save;
-        } 
-        else if (unique){
+        if (unique){
             double[] jawabanUnik= new double[m.rowEff];
             String result ="";
             
@@ -197,6 +101,9 @@ public class EliminasiGaus {
                     jawabanUnik[row]-=m.m[row][i]*jawabanUnik[i];
                 }
             }
+            System.out.println("Hasil Gaus:");
+            ODM.displayMatrix(m);
+            System.out.println();
             System.err.println("Solusi SPL tersebut adalah:");
             for (int i=0; i<m.rowEff; i++){
                 result="X"+(i+1)+" = "+jawabanUnik[i];
@@ -207,6 +114,9 @@ public class EliminasiGaus {
                 
         }
         else{
+            Matrix asli = new Matrix();
+            ODM.createMatrix(asli, m.rowEff, m.colEff);
+            asli=m;
             boolean[] parametric = new boolean[m.colEff - 1]; 
             for (int i=0; i<m.colEff-1; i++){ //array penanda mana variabel bebas mana tidak
                 parametric[i]=true;
@@ -239,8 +149,6 @@ public class EliminasiGaus {
                                         m.m[i][z]=m.m[i][z]+m.m[l][z]*pengali;
                                     }
                                     m.m[i][col]=0;
-                                    System.out.println("");
-                                    ODM.displayMatrix(m);
                                     break;
                                 }
                             }
@@ -251,7 +159,9 @@ public class EliminasiGaus {
                 }
             }
 
-            
+            System.out.println("Hasil Gaus:");
+            ODM.displayMatrix(asli);
+            System.out.println();
             save.add("Solusi untuk SPL mu:\n");
             System.out.println("Solusi untuk SPL mu:");
             for (int row=0; row<m.rowEff;row++){  
@@ -303,8 +213,4 @@ public class EliminasiGaus {
     }
         
 }
-    
-
-
-    
     

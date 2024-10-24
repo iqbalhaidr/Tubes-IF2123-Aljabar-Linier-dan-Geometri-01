@@ -248,6 +248,7 @@ public class MyApp {
                         ArrayList<String> answer=gauss.backsubsperfected(m);
                         int save = saveOutput();
                         if (save == 1) {
+                            System.out.print("Masukkan nama file input: ");
                             String file = sc.nextLine();
                             // Menggunakan try-with-resources untuk menulis file dengan aman
                             try (FileWriter myWriter = new FileWriter("solusi_" + file + ".txt")) {
