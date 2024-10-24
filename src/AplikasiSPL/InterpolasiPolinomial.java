@@ -40,6 +40,48 @@ public class InterpolasiPolinomial {
         return mOut;
         }
 
+    public static void printPolynomial(double[] coefficients) {
+        StringBuilder polynomial = new StringBuilder();
+        int degree = coefficients.length - 1; // suku tertinggi
+
+        for (int i = 0; i <= degree; i++) {
+            if (coefficients[i] == 0) {
+                continue;
+            }
+
+
+            if (polynomial.length() > 0) {
+                polynomial.append(coefficients[i] > 0 ? " + " : " - ");
+            } else if (coefficients[i] < 0) {
+                polynomial.append("- ");
+            }
+
+
+            double absCoefficient = Math.abs(coefficients[i]);
+
+            // Append coeff
+            if (i == 0 || absCoefficient != 1) {
+                polynomial.append(absCoefficient);
+            }
+
+
+            if (i > 0) {
+                if (i > 1) {
+                    polynomial.append("(");
+                }
+                polynomial.append("x");
+                if (i > 1) {
+                    polynomial.append("^").append(i).append(")");
+                }
+            }
+        }
+
+        // print hasil
+        System.out.println(polynomial.toString().trim());
+    }
+
+
+
     public double SolveInterpolasi(Matrix m, boolean inputfile) {
         double x = 0;
         double[] numbers = null;
@@ -63,6 +105,9 @@ public class InterpolasiPolinomial {
                 String numberString = parts[1].trim();
                 numbers[i] = Double.parseDouble(numberString);
             }
+
+            System.out.print("\nPersamaan polinomial: ");
+            printPolynomial(numbers);
 
             for (int col = 0; col < numbers.length; col++) {
                 double hasil = numbers[col] * Math.pow(x, col);
@@ -95,6 +140,9 @@ public class InterpolasiPolinomial {
                 String numberString = parts[1].trim();
                 numbers[i] = Double.parseDouble(numberString);
             }
+
+                System.out.print("\nPersamaan polinomial: ");
+                printPolynomial(numbers);
 
             for (int col = 0; col < numbers.length; col++) {
                 double hasil = numbers[col] * Math.pow(x, col);
