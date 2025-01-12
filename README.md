@@ -1,9 +1,4 @@
-
-# Algeo01-23051
-> Tugas Besar 1 IF2123 Aljabar Linier dan Geometri
-Sistem Persamaan Linier, Determinan, dan Aplikasinya
-Semester I Tahun 2024/2025
-
+# Tugas Besar 1 IF2123 Aljabar Linier dan Geometri 2024
 Program yang merupakan kalkulator aplikasi Sistem Persamaan Linier dan Determinan
 
 
